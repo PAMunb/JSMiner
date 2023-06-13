@@ -17,9 +17,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @Builder
@@ -29,7 +26,6 @@ public class Walker {
     public final String path;
     public final String project;
     public final int steps;
-    public final int threads;
     public final Date initialDate;
     public final Date endDate;
 

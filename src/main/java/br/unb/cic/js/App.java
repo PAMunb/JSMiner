@@ -28,7 +28,6 @@ public class App {
                     .path(arguments.directory)
                     .project(arguments.project)
                     .steps(arguments.steps)
-                    .threads(arguments.threads)
                     .initialDate(Formatter.format.parse(arguments.initialDate))
                     .endDate(Formatter.format.parse(arguments.endDate))
                     .build();

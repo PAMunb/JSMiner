@@ -12,9 +12,6 @@ public class Args {
     @Parameter(names = {"-s", "--steps"}, description = "The delta interval through each commit")
     public Integer steps = 7;
 
-    @Parameter(names = {"-t", "--threads"}, description = "How many threads to use when processing multiple projects")
-    public Integer threads = 1;
-
     @Parameter(names = {"-id", "--initial-date"}, description = "When to start walking a project (dd-mm-yyyy)")
     public String initialDate = "01-06-2013";
 
