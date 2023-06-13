@@ -90,9 +90,6 @@ public class Walker {
 
                 writer.write(Summary.header());
 
-                val pool = Executors.newFixedThreadPool(threads);
-                val tasks = new Vector<Future>();
-
                 for (Path repositoryPath: repositories) {
                     val repositoryPathSplit = repositoryPath.toString().split("/");
                     val repositoryName = repositoryPathSplit[repositoryPathSplit .length-1];
@@ -118,15 +115,8 @@ public class Walker {
                             .steps(steps)
                             .build();
 
-                    tasks.add(pool.submit(task));
+                    task.run();
                 }
-
-                // wait for every task to finish
-                for (Future task : tasks) {
-                    task.get();
-                }
-
-                pool.shutdown();
 
                 // flush any pending text and close the results.csv writer
                 writer.flush();
@@ -135,9 +125,6 @@ public class Walker {
                 logger.warn("path {} does not exist or isn't a directory", p);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (java.lang.InterruptedException | java.util.concurrent.ExecutionException ex) {
-            logger.error("failed to execute a concurrent task, reason {}", ex.getMessage());
             ex.printStackTrace();
         }
     }
