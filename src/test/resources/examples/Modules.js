@@ -37,3 +37,6 @@ import a,{aaa as bbb} from 'ccc';
 import('runtime_import');
 
 import React from 'react';
+
+import { name as squareName, draw } from "./shapes/square.js";
+import { name as circleName } from "https://example.com/shapes/circle.js";

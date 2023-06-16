@@ -6,7 +6,7 @@
 //------------------------------------------------------------------------------
 
 var list = [ 1, 2, 3 ]
-var [ a, , b ] = list
+var [ a, , b ] = list//ok
 [ b, a ] = [ a, b ]
 
 //------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ var [ a, , b ] = list
 // http://es6-features.org/#ObjectMatchingShorthandNotation
 //------------------------------------------------------------------------------
 
-var { op, lhs, rhs } = getASTNode()
+var { op, lhs, rhs } = getASTNode()//ok
 
 //------------------------------------------------------------------------------
 // Object Matching, Deep Matching
@@ -23,7 +23,7 @@ var { op, lhs, rhs } = getASTNode()
 // http://es6-features.org/#ObjectMatchingDeepMatching
 //------------------------------------------------------------------------------
 
-var { op: a, lhs: { op: b }, rhs: c } = getASTNode()
+var { op: a, lhs: { op: b }, rhs: c } = getASTNode()//ok
 
 //------------------------------------------------------------------------------
 // Object And Array Matching, Default Values
@@ -33,8 +33,8 @@ var { op: a, lhs: { op: b }, rhs: c } = getASTNode()
 
 var obj = { a: 1 }
 var list = [ 1 ]
-var { a, b = 2 } = obj
-var [ x, y = 2 ] = list
+var { a, b = 2 } = obj//ok
+var [ x, y = 2 ] = list//ok
 
 //------------------------------------------------------------------------------
 // Parameter Context Matching
@@ -63,7 +63,7 @@ h({ name: "bar", val: 42 })
 //------------------------------------------------------------------------------
 
 var list = [ 7, 42 ]
-var [ a = 1, b = 2, c = 3, d ] = list
+var [ a = 1, b = 2, c = 3, d ] = list//ok
 a === 7
 b === 42
 c === 3

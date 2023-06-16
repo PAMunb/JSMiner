@@ -1,6 +1,6 @@
 package br.unb.cic.js.miner.util;
-import org.antlr.v4.runtime.*;
 
+import org.antlr.v4.runtime.*;
 import br.unb.cic.js.miner.JavaScriptLexer;
 
 import java.util.Stack;
@@ -12,7 +12,7 @@ import java.util.Stack;
 public abstract class JavaScriptLexerBase extends Lexer
 {
     /**
-     * Stores values of nested modes. By default mode is strict or
+     * Stores values of nested modes. By default, mode is strict or
      * defined externally (useStrictDefault)
      */
     private Stack<Boolean> scopeStrictModes = new Stack<Boolean>();

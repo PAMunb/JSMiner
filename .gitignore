@@ -1,4 +1,11 @@
 /target/
+.settings/*
+.idea/*
+.vscode/
+
 .classpath
 .project
-.settings/*
+*.iml
+.antlr
+dataset/*
+js-miner-out/*
