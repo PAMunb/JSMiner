@@ -6,16 +6,11 @@ import sys
 
 cwd = sys.argv[1]
 
-# Define o nome do arquivo de saída
 output_file = 'results.csv'
 
 delimiter = ','
 
-# Lista todos os arquivos que correspondem ao padrão
 csv_files = [f for f in os.listdir(cwd) if f.endswith('.csv')]
-
-print(csv_files)
-
 
 with open(output_file, 'w', newline='') as outfile:
     writer = None
