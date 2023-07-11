@@ -1,29 +1,52 @@
 package br.unb.cic.js.miner.metrics;
 
-import lombok.val;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Profiler abstracts a set of points whose value is the time it took to do some computation.
+ * Profiler abstracts a set of points whose value is the time it took to do some computation. The precision of the
+ * profiler is given in milliseconds.
  */
 public class Profiler {
 
     // Set of points for a given runtime
-    public final List<Long> points;
+    private final List<Long> points;
+
+    private Long timer;
 
     public Profiler() {
-        points = new ArrayList<Long>();
+        points = new ArrayList<>();
     }
 
-    public Double average() {
+    public Long average() {
         if (points.size() == 0) {
-            return 0D;
+            return 0L;
         }
 
-        val avg = points.stream().reduce(Long::sum).orElse(0L).doubleValue()/points.size();
+        return points.stream().reduce(Long::sum).orElse(0L)/points.size();
+    }
 
-        return avg;
+    public Long last() {
+        if (points.size() == 0) {
+            return 0L;
+        }
+
+        return points.get(points.size()-1);
+    }
+
+    /**
+     * Start an internal timer with millisecond resolution.
+     */
+    public void start() {
+        timer = System.currentTimeMillis();
+    }
+
+    /**
+     * Stop the timer and add the data point to an internal structure
+     */
+    public void stop() {
+        this.points.add(System.currentTimeMillis()-timer);
+
+        timer = 0L;
     }
 }

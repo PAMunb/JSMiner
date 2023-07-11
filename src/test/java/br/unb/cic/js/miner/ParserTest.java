@@ -39,7 +39,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertTrue(visitor.getTotalArrowDeclarations() > 0);
+            assertTrue(visitor.getTotalArrowDeclarations().get() > 0);
             assertNotNull(p);
         }
         catch(Exception e) {
@@ -55,7 +55,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(10, visitor.getTotalStatements());
+            assertEquals(10, visitor.getTotalStatements().get());
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -70,7 +70,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(11, visitor.getTotalAsyncDeclarations());
+            assertEquals(11, visitor.getTotalAsyncDeclarations().get());
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -85,8 +85,8 @@ public class ParserTest {
 	        JavaScriptParser.ProgramContext p = parser.parse(content);
 	        JSVisitor visitor = new JSVisitor();
 	        p.accept(visitor);
-	        assertEquals(3, visitor.getTotalArrayDestructuring());
-	        assertEquals(3, visitor.getTotalObjectDestructuring());
+	        assertEquals(3, visitor.getTotalArrayDestructuring().get());
+	        assertEquals(3, visitor.getTotalObjectDestructuring().get());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -101,7 +101,7 @@ public class ParserTest {
 	        JavaScriptParser.ProgramContext p = parser.parse(content);
 	        JSVisitor visitor = new JSVisitor();
 	        p.accept(visitor);
-	        assertEquals(1, visitor.getTotalDefaultParameters());
+	        assertEquals(1, visitor.getTotalDefaultParameters().get());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -115,7 +115,7 @@ public class ParserTest {
 	        JavaScriptParser.ProgramContext p = parser.parse(content);
 	        JSVisitor visitor = new JSVisitor();
 	        p.accept(visitor);
-	        assertEquals(1, visitor.getTotalSpreadArguments());
+	        assertEquals(1, visitor.getTotalSpreadArguments().get());
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -129,8 +129,8 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(2, visitor.getTotalNewPromises());
-            assertEquals(1, visitor.getTotalPromiseAllAndThenIdiom());
+            assertEquals(2, visitor.getTotalNewPromises().get());
+            assertEquals(1, visitor.getTotalPromiseAllAndThenIdiom().get());
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -144,7 +144,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(3, visitor.getTotalAwaitDeclarations());
+            assertEquals(3, visitor.getTotalAwaitDeclarations().get());
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -159,7 +159,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(6, visitor.getTotalLetDeclarations());
+            assertEquals(6, visitor.getTotalLetDeclarations().get());
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -174,7 +174,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(5, visitor.getTotalConstDeclaration());
+            assertEquals(5, visitor.getTotalConstDeclaration().get());
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -189,8 +189,8 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(5, visitor.getTotalExportDeclarations());
-            assertEquals(8, visitor.getTotalImportStatements());
+            assertEquals(5, visitor.getTotalExportDeclarations().get());
+            assertEquals(8, visitor.getTotalImportStatements().get());
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -205,7 +205,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(1, visitor.getTotalRestStatements());
+            assertEquals(1, visitor.getTotalRestStatements().get());
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -220,7 +220,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(15, visitor.getTotalClassDeclarations());
+            assertEquals(15, visitor.getTotalClassDeclarations().get());
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -235,7 +235,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(6, visitor.getTotalYieldDeclarations());
+            assertEquals(6, visitor.getTotalYieldDeclarations().get());
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -269,8 +269,8 @@ public class ParserTest {
 	            assertNotNull(p);
 	            JSVisitor visitor = new JSVisitor();
 	            p.accept(visitor);
-	            totalFunctionDeclarations += visitor.getTotalArrowDeclarations();
-	            totalAsyncDeclarations += visitor.getTotalAsyncDeclarations();
+	            totalFunctionDeclarations = visitor.getTotalArrowDeclarations().incrementAndGet();
+	            totalAsyncDeclarations += visitor.getTotalAsyncDeclarations().incrementAndGet();
 			} catch (Throwable e) {
 				errors++;
 			}

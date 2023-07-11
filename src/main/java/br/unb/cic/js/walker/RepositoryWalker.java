@@ -5,10 +5,10 @@ import br.unb.cic.js.date.Interval;
 import br.unb.cic.js.miner.JSParser;
 import br.unb.cic.js.miner.JSVisitor;
 import br.unb.cic.js.miner.metrics.Metric;
+import br.unb.cic.js.miner.metrics.Profiler;
 import br.unb.cic.js.miner.metrics.Summary;
 import lombok.Builder;
 import lombok.val;
-import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.ResetCommand;
@@ -23,6 +23,8 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
@@ -38,20 +40,18 @@ public class RepositoryWalker {
 
     private Repository repository;
 
-    private List<Summary> summaries;
+    private final List<Summary> summaries = new ArrayList<>();
 
     /**
      * Traverse the git project from an initial date to an end date.
      *
-     * @param initial
-     * @param end
-     * @param steps
+     * @param initial The initial date of the traversal
+     * @param end The end date of the traversal
+     * @param steps How many days should the traverse use to group a set of commits?
      * @throws Exception
      */
     public List<Summary> traverse(Date initial, Date end, int steps) throws Exception {
         logger.info("{} -- processing project", project);
-
-        summaries = new ArrayList<>();
 
         repository = FileRepositoryBuilder.create(path.toAbsolutePath().resolve(".git").toFile());
 
@@ -73,12 +73,15 @@ public class RepositoryWalker {
             return summaries;
         }
 
+        git.reset().setMode(ResetCommand.ResetType.HARD).call();
         git.checkout().setName(mainBranch).call();
 
         val head = repository.resolve("refs/heads/" + mainBranch);
 
         val commits = new HashMap<Date, ObjectId>();
         val commitDates = new ArrayList<Date>();
+
+        Date previous = null;
 
         // fill the commits map with commits that will be analyzed given that they
         // belong to the defined interval
@@ -87,7 +90,13 @@ public class RepositoryWalker {
             val current = author.getWhen();
 
             if (current.compareTo(initial) >= 0 && current.compareTo(end) <= 0) {
-                commitDates.add(current);
+                // only add commits that fit the interval
+                if (previous == null || Interval.diff(current, previous, Interval.Unit.Days) >= steps) {
+                    commitDates.add(current);
+
+                    previous = current;
+                }
+
                 commits.put(current, commit.toObjectId());
             }
         }
@@ -95,24 +104,27 @@ public class RepositoryWalker {
         Collections.sort(commitDates);
 
         var traversed = 0;
-        var total = commitDates.size();
 
-        logger.info("{} -- number of commits {} ", project, total);
+        val totalGroups = commitDates.size();
+        val totalCommits = commits.size();
 
-        Date previous = null;
+        logger.info("{} -- number of commits {} ", project, totalCommits);
+        logger.info("{} -- number of groups {} ", project, totalGroups);
+
+        val profiler = new Profiler();
 
         for (Date current : commitDates) {
-            if (traversed % 500 == 0) {
-                logger.info("{} -- visiting commit {} of {}", project, traversed, total);
-            }
             traversed++;
+            logger.info("{} -- visiting commit group {} of {} (took {}ms to collect in the last run)", project, traversed, totalGroups, profiler.last());
 
-            if (previous == null || (Interval.diff(previous, current, Interval.Unit.Days) >= steps)) {
-                collect(head, current, commits);
+            profiler.start();
 
-                previous = current;
-            }
+            collect(head, current, commits);
+
+            profiler.stop();
         }
+
+        logger.info("{} -- finished, took {}ms in average to collect each commit group", project, profiler.average());
 
         git.close();
 
@@ -155,38 +167,52 @@ public class RepositoryWalker {
             metrics.add(Metric.builder().name("revision").value(commit).build());
             metrics.add(Metric.builder().name("files").value(files.size()).build());
 
+            val cores = Runtime.getRuntime().availableProcessors();
+            val tasks = new ArrayList<Future>();
+            val pool = Executors.newFixedThreadPool(cores);
+
             for (Path p : files) {
-                try {
-                    val file = p.toFile();
+                Runnable task = () -> {
+                    try {
+                        val content = new String(Files.readAllBytes(p));
+                        val program = parser.parse(content);
 
-                    val content = new String(Files.readAllBytes(file.toPath()));
-                    val program = parser.parse(content);
+                        program.accept(visitor);
 
-                    program.accept(visitor);
+                    } catch (Exception ex) {
+                        errors.put(p+"-"+commit, ex.getMessage());
+                    }
+                };
 
-                } catch (ParseCancellationException ex) {
-                    errors.put(p.toString()+"-"+commit, ex.getMessage());
-                }
+                tasks.add(pool.submit(task));
             }
 
-            metrics.add(Metric.builder().name("async-declarations").value(visitor.getTotalAsyncDeclarations()).build());
-            metrics.add(Metric.builder().name("await-declarations").value(visitor.getTotalAwaitDeclarations()).build());
-            metrics.add(Metric.builder().name("const-declarations").value(visitor.getTotalConstDeclaration()).build());
-            metrics.add(Metric.builder().name("class-declarations").value(visitor.getTotalClassDeclarations()).build());
-            metrics.add(Metric.builder().name("arrow-function-declarations").value(visitor.getTotalArrowDeclarations()).build());
-            metrics.add(Metric.builder().name("let-declarations").value(visitor.getTotalLetDeclarations()).build());
-            metrics.add(Metric.builder().name("export-declarations").value(visitor.getTotalExportDeclarations()).build());
-            metrics.add(Metric.builder().name("yield-declarations").value(visitor.getTotalYieldDeclarations()).build());
-            metrics.add(Metric.builder().name("import-statements").value(visitor.getTotalImportStatements()).build());
-            metrics.add(Metric.builder().name("promise-declarations").value(visitor.getTotalNewPromises()).build());
-            metrics.add(Metric.builder().name("promise-all-and-then").value(visitor.getTotalPromiseAllAndThenIdiom()).build());
-            metrics.add(Metric.builder().name("default-parameters").value(visitor.getTotalDefaultParameters()).build());
-            metrics.add(Metric.builder().name("rest-statements").value(visitor.getTotalRestStatements()).build());
-            metrics.add(Metric.builder().name("spread-arguments").value(visitor.getTotalSpreadArguments()).build());
-            metrics.add(Metric.builder().name("array-destructuring").value(visitor.getTotalArrayDestructuring()).build());
-            metrics.add(Metric.builder().name("object-destructuring").value(visitor.getTotalObjectDestructuring()).build());
+            for (val task : tasks) {
+                task.get();
+            }
+
+            pool.shutdown();
+
+            metrics.add(Metric.builder().name("async-declarations").value(visitor.getTotalAsyncDeclarations().get()).build());
+            metrics.add(Metric.builder().name("await-declarations").value(visitor.getTotalAwaitDeclarations().get()).build());
+            metrics.add(Metric.builder().name("const-declarations").value(visitor.getTotalConstDeclaration().get()).build());
+            metrics.add(Metric.builder().name("class-declarations").value(visitor.getTotalClassDeclarations().get()).build());
+            metrics.add(Metric.builder().name("arrow-function-declarations").value(visitor.getTotalArrowDeclarations().get()).build());
+            metrics.add(Metric.builder().name("let-declarations").value(visitor.getTotalLetDeclarations().get()).build());
+            metrics.add(Metric.builder().name("export-declarations").value(visitor.getTotalExportDeclarations().get()).build());
+            metrics.add(Metric.builder().name("yield-declarations").value(visitor.getTotalYieldDeclarations().get()).build());
+            metrics.add(Metric.builder().name("import-statements").value(visitor.getTotalImportStatements().get()).build());
+            metrics.add(Metric.builder().name("promise-declarations").value(visitor.getTotalNewPromises().get()).build());
+            metrics.add(Metric.builder().name("promise-all-and-then").value(visitor.getTotalPromiseAllAndThenIdiom().get()).build());
+            metrics.add(Metric.builder().name("default-parameters").value(visitor.getTotalDefaultParameters().get()).build());
+            metrics.add(Metric.builder().name("rest-statements").value(visitor.getTotalRestStatements().get()).build());
+            metrics.add(Metric.builder().name("spread-arguments").value(visitor.getTotalSpreadArguments().get()).build());
+            metrics.add(Metric.builder().name("array-destructuring").value(visitor.getTotalArrayDestructuring().get()).build());
+            metrics.add(Metric.builder().name("object-destructuring").value(visitor.getTotalObjectDestructuring().get()).build());
             metrics.add(Metric.builder().name("errors").value(errors.size()).build());
-            metrics.add(Metric.builder().name("statements").value(visitor.getTotalStatements()).build());
+            metrics.add(Metric.builder().name("statements").value(visitor.getTotalStatements().get()).build());
+
+            System.gc();
 
             val summary = Summary.builder()
                     .date(current)
@@ -195,7 +221,9 @@ public class RepositoryWalker {
                     .errors(errors)
                     .build();
 
-            summaries.add(summary);
+            synchronized (summaries) {
+                summaries.add(summary);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

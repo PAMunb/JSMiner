@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.val;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
@@ -12,23 +13,24 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	private static final String THEN = "then";
 	private static final String ALL = "all";
 	private static final String PROMISE = "Promise";
-	int totalArrowDeclarations = 0;
-	int totalAsyncDeclarations = 0;
-	int totalAwaitDeclarations = 0;
-	int totalLetDeclarations = 0;
-	int totalConstDeclaration = 0;
-	int totalClassDeclarations = 0;
-	int totalYieldDeclarations = 0;
-	int totalExportDeclarations = 0;
-	int totalImportStatements = 0;
-	int totalRestStatements = 0;
-	int totalNewPromises = 0;
-	int totalPromiseAllAndThenIdiom = 0;
-	int totalArrayDestructuring = 0;
-	int totalObjectDestructuring = 0;
-	int totalDefaultParameters = 0;
-	int totalSpreadArguments = 0;
-	int totalStatements = 0;
+
+	AtomicInteger totalArrowDeclarations = new AtomicInteger(0);
+	AtomicInteger totalAsyncDeclarations = new AtomicInteger(0);
+	AtomicInteger totalAwaitDeclarations = new AtomicInteger(0);
+	AtomicInteger totalLetDeclarations = new AtomicInteger(0);
+	AtomicInteger totalConstDeclaration = new AtomicInteger(0);
+	AtomicInteger totalClassDeclarations = new AtomicInteger(0);
+	AtomicInteger totalYieldDeclarations = new AtomicInteger(0);
+	AtomicInteger totalExportDeclarations = new AtomicInteger(0);
+	AtomicInteger totalImportStatements = new AtomicInteger(0);
+	AtomicInteger totalRestStatements = new AtomicInteger(0);
+	AtomicInteger totalNewPromises = new AtomicInteger(0);
+	AtomicInteger totalPromiseAllAndThenIdiom = new AtomicInteger(0);
+	AtomicInteger totalArrayDestructuring = new AtomicInteger(0);
+	AtomicInteger totalObjectDestructuring = new AtomicInteger(0);
+	AtomicInteger totalDefaultParameters = new AtomicInteger(0);
+	AtomicInteger totalSpreadArguments = new AtomicInteger(0);
+	AtomicInteger totalStatements = new AtomicInteger(0);
 
 	@Override
 	public Void visitStatement(StatementContext ctx) {
@@ -57,7 +59,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		statements.add(ctx.functionDeclaration() != null);
 
 		if (statements.stream().reduce((m, n) -> m || n).orElse(false)) {
-			totalStatements++;
+			totalStatements.incrementAndGet();
 		}
 
 		return super.visitStatement(ctx);
@@ -66,7 +68,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitStatementList(StatementListContext ctx) {
 		if (ctx.statement() != null) {
-			totalStatements++;
+			totalStatements.incrementAndGet();
 		}
 		return super.visitStatementList(ctx);
 	}
@@ -74,25 +76,25 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitFunctionDeclaration(FunctionDeclarationContext ctx) {
 		if (ctx.Async() != null) {
-			totalAsyncDeclarations++;
+			totalAsyncDeclarations.incrementAndGet();
 		}
 		return super.visitFunctionDeclaration(ctx);
 	}
 
 	@Override
 	public Void visitArrowFunction(ArrowFunctionContext ctx) {
-		totalArrowDeclarations++;
+		totalArrowDeclarations.incrementAndGet();
 		if (ctx.Async() != null) {
-			totalAsyncDeclarations++;
+			totalAsyncDeclarations.incrementAndGet();
 		}
 		return super.visitArrowFunction(ctx);
 	}
 
 	@Override
 	public Void visitAnonymousFunctionDecl(AnonymousFunctionDeclContext ctx) {
-		totalArrowDeclarations++;
+		totalArrowDeclarations.incrementAndGet();
 		if (ctx.Async() != null) {
-			totalAsyncDeclarations++;
+			totalAsyncDeclarations.incrementAndGet();
 		}
 		return super.visitAnonymousFunctionDecl(ctx);
 	}
@@ -100,7 +102,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitFunctionProperty(FunctionPropertyContext ctx) {
 		if (ctx.Async() != null) {
-			totalAsyncDeclarations++;
+			totalAsyncDeclarations.incrementAndGet();
 		}
 		return super.visitFunctionProperty(ctx);
 	}
@@ -108,7 +110,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitYieldExpression(YieldExpressionContext ctx) {
 		if (ctx.yieldStatement() != null) {
-			totalYieldDeclarations++;
+			totalYieldDeclarations.incrementAndGet();
 		}
 		return super.visitYieldExpression(ctx);
 	}
@@ -116,7 +118,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitClassDeclaration(ClassDeclarationContext ctx) {
 		if (ctx.Class() != null) {
-			totalClassDeclarations++;
+			totalClassDeclarations.incrementAndGet();
 		}
 		return super.visitClassDeclaration(ctx);
 	}
@@ -124,7 +126,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitExportDeclaration(ExportDeclarationContext ctx) {
 		if (ctx.Export() != null) {
-			totalExportDeclarations++;
+			totalExportDeclarations.incrementAndGet();
 		}
 		return super.visitExportDeclaration(ctx);
 	}
@@ -132,7 +134,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitImportExpression(ImportExpressionContext ctx) {
 		if (ctx.Import() != null) {
-			totalImportStatements++;
+			totalImportStatements.incrementAndGet();
 		}
 		return super.visitImportExpression(ctx);
 	}
@@ -140,7 +142,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitImportStatement(ImportStatementContext ctx) {
 		if (ctx.Import() != null) {
-			totalImportStatements++;
+			totalImportStatements.incrementAndGet();
 		}
 		return super.visitImportStatement(ctx);
 	}
@@ -148,7 +150,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitLastFormalParameterArg(LastFormalParameterArgContext ctx) {
 		if (ctx.Ellipsis() != null) {
-			totalRestStatements++;
+			totalRestStatements.incrementAndGet();
 		}
 		return super.visitLastFormalParameterArg(ctx);
 	}
@@ -156,10 +158,10 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitVarModifier(VarModifierContext ctx) {
 		if (ctx.Const() != null) {
-			totalConstDeclaration++;
+			totalConstDeclaration.incrementAndGet();
 		}
 		if (ctx.let_() != null) {
-			totalLetDeclarations++;
+			totalLetDeclarations.incrementAndGet();
 		}
 		return super.visitVarModifier(ctx);
 	}
@@ -167,7 +169,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitAwaitExpression(AwaitExpressionContext ctx) {
 		if (ctx.Await() != null) {
-			totalAwaitDeclarations++;
+			totalAwaitDeclarations.incrementAndGet();
 		}
 		return super.visitAwaitExpression(ctx);
 	}
@@ -175,7 +177,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitIdentifier(IdentifierContext ctx) {
 		if (ctx.Async() != null) {
-			totalAsyncDeclarations++;
+			totalAsyncDeclarations.incrementAndGet();
 		}
 		return super.visitIdentifier(ctx);
 	}
@@ -183,7 +185,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitClassElementMethodDefinition(ClassElementMethodDefinitionContext ctx) {
 		if(ctx.Async() != null) {
-			totalAsyncDeclarations++;
+			totalAsyncDeclarations.incrementAndGet();
 		}
 		return super.visitClassElementMethodDefinition(ctx);
 	}
@@ -191,7 +193,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitClassElementAssigment(ClassElementAssigmentContext ctx) {
 		if(ctx.Async() != null) {
-			totalAsyncDeclarations++;
+			totalAsyncDeclarations.incrementAndGet();
 		}
 		return super.visitClassElementAssigment(ctx);
 	}
@@ -199,27 +201,27 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitNewExpression(NewExpressionContext ctx) {
 		if (ctx.singleExpression().getText().equals(PROMISE)) {
-			totalNewPromises++;
+			totalNewPromises.incrementAndGet();
 		}
 		return super.visitNewExpression(ctx);
 	}
 
 	@Override
 	public Void visitArgumentsExpression(ArgumentsExpressionContext ctx) {
-		if (ctx.singleExpression().getText().contains(PROMISE) && 
-			ctx.singleExpression().getText().contains(ALL) &&
-			ctx.singleExpression().getText().contains(THEN)) {
-			totalPromiseAllAndThenIdiom++;
+		if (ctx.singleExpression().getText().contains(PROMISE) &&
+				ctx.singleExpression().getText().contains(ALL) &&
+				ctx.singleExpression().getText().contains(THEN)) {
+			totalPromiseAllAndThenIdiom.incrementAndGet();
 		}
 		return super.visitArgumentsExpression(ctx);
 	}
 
 	@Override
-	public Void visitAssignmentExpression(AssignmentExpressionContext ctx) {		
+	public Void visitAssignmentExpression(AssignmentExpressionContext ctx) {
 		if (ctx.singleExpression().get(0) instanceof ArrayLiteralExpressionContext) {
-			totalArrayDestructuring++;
+			totalArrayDestructuring.incrementAndGet();
 		}else if(ctx.singleExpression().get(0) instanceof ObjectLiteralExpressionContext) {
-			totalObjectDestructuring++;
+			totalObjectDestructuring.incrementAndGet();
 		}
 		return super.visitAssignmentExpression(ctx);
 	}
@@ -228,10 +230,10 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	public Void visitVariableDeclaration(VariableDeclarationContext ctx) {
 		if(ctx.singleExpression() != null && !ctx.assignable().isEmpty()) {
 			if (ctx.assignable().arrayLiteral() != null) {
-				totalArrayDestructuring++;
+				totalArrayDestructuring.incrementAndGet();
 			}
 			else if (ctx.assignable().objectLiteral() != null) {
-				totalObjectDestructuring++;
+				totalObjectDestructuring.incrementAndGet();
 			}
 		}
 		return super.visitVariableDeclaration(ctx);
@@ -240,7 +242,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitFormalParameterArg(FormalParameterArgContext ctx) {
 		if (ctx.singleExpression() != null) {
-			totalDefaultParameters++;
+			totalDefaultParameters.incrementAndGet();
 		}
 		return super.visitFormalParameterArg(ctx);
 	}
@@ -248,7 +250,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitArgument(ArgumentContext ctx) {
 		if (ctx.Ellipsis() != null) {
-			totalSpreadArguments++;
+			totalSpreadArguments.incrementAndGet();
 		}
 		return super.visitArgument(ctx);
 	}

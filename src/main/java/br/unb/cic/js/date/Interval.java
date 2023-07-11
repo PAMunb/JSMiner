@@ -22,6 +22,14 @@ public class Interval {
         }
     }
 
+    /**
+     * Do a diff on a given interval d-e
+     *
+     * @param d
+     * @param e
+     * @param u
+     * @return A number representing the diff
+     */
     public static long diff(Date d, Date e, Unit u) {
         long diff = Math.abs(d.getTime() - e.getTime());
 
