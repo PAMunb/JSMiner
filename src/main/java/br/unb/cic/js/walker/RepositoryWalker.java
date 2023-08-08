@@ -10,11 +10,13 @@ import br.unb.cic.js.miner.metrics.Summary;
 import br.unb.cic.js.walker.rules.DirectoriesRule;
 import lombok.Builder;
 import lombok.val;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.filter.CommitTimeRevFilter;
 import org.eclipse.jgit.revwalk.filter.RevFilter;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.slf4j.Logger;
@@ -71,6 +73,7 @@ public class RepositoryWalker {
             mainBranch = branches.get().getTarget().getName().substring("refs/remotes/origin/".length());
         } else {
             logger.error("{} -- failed to get the project main branch", project);
+            git.close();
             return summaries;
         }
 
@@ -78,10 +81,11 @@ public class RepositoryWalker {
         git.checkout().setName(mainBranch).call();
 
         val head = repository.resolve("refs/heads/" + mainBranch);
+
         val revisions = git.log()
                 .add(head)
-                .setRevFilter(RevFilter.ALL)
-                .setSkip(1)
+                .setRevFilter(CommitTimeRevFilter.between(initial, end))
+                .setRevFilter(RevFilter.NO_MERGES)
                 .call();
 
         val commits = new HashMap<Date, ObjectId>();

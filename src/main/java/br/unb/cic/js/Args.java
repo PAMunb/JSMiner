@@ -16,7 +16,7 @@ public class Args {
     public Integer threadsProjects = 1;
 
     @Parameter(names = {"-ft", "--files-threads"}, description =  "How many threads to use when analyzing a project (defaults to number of processors")
-    public Integer threadsFiles = Runtime.getRuntime().availableProcessors();;
+    public Integer threadsFiles = Runtime.getRuntime().availableProcessors();
 
     @Parameter(names = {"-id", "--initial-date"}, description = "When to start walking a project (dd-mm-yyyy)")
     public String initialDate = "01-06-2013";
