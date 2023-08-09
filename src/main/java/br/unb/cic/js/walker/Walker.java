@@ -139,10 +139,11 @@ public class Walker {
                 logger.warn("path {} does not exist or isn't a directory", p);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            // ex.printStackTrace();
+            logger.error("failed to execute a concurrent task, reason {}", ex.getMessage());
         } catch (java.lang.InterruptedException | java.util.concurrent.ExecutionException ex) {
             logger.error("failed to execute a concurrent task, reason {}", ex.getMessage());
-            ex.printStackTrace();
+            // ex.printStackTrace();
         }
     }
 }

@@ -171,6 +171,8 @@ public class RepositoryWalker {
                         return !isDirectory && isJsFile;
                     }).collect(Collectors.toList());
 
+            walker.close();
+
             val parser = new JSParser();
             val visitor = new JSVisitor();
 
@@ -237,9 +239,9 @@ public class RepositoryWalker {
             val commit = commits.get(current).toString().split(" ")[1];
 
             logger.error("failed to collect data for project: {} on revision: {}", project, commit);
-            ex.printStackTrace();
-
-            throw new RuntimeException(ex);
+            // ex.printStackTrace();
+            System.out.println(ex.getStackTrace());
+            // throw new RuntimeException(ex);
         }
 
         return summary.build();
