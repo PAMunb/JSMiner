@@ -22,10 +22,12 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.ref.WeakReference;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -40,20 +42,29 @@ public class RepositoryWalker {
     public final String project;
     public final Path path;
 
-    private final List<Summary> summaries = new ArrayList<>();
+    private ConcurrentLinkedQueue<Summary> summaries = new ConcurrentLinkedQueue<>();
 
     private Repository repository;
+
+    public void addSummary(Summary summary) {
+        summaries.add(summary);
+    }
+
+    public ConcurrentLinkedQueue<Summary> getSummaries() {
+        return summaries;
+    }
 
     /**
      * Traverse the git project from an initial date to an end date.
      *
      * @param initial The initial date of the traversal
      * @param end     The end date of the traversal
-     * @param steps   How many days should the traverse use to group a set of commits?
+     * @param steps   How many days should the traverse use to group a set of
+     *                commits?
      * @param threads How many threads to use when analyzing a revision
      * @throws Exception
      */
-    public List<Summary> traverse(Date initial, Date end, int steps, int threads) throws Exception {
+    public ConcurrentLinkedQueue<Summary> traverse(Date initial, Date end, int steps, int threads) throws Exception {
         logger.info("{} -- processing project", project);
 
         repository = FileRepositoryBuilder.create(path.toAbsolutePath().resolve(".git").toFile());
@@ -125,7 +136,8 @@ public class RepositoryWalker {
 
         for (Date current : commitDates) {
             traversed++;
-            logger.info("{} -- visiting commit group {} of {} (took {}ms to collect in the last run)", project, traversed, totalGroups, profiler.last());
+            logger.info("{} -- visiting commit group {} of {} (took {}ms to collect in the last run)", project,
+                    traversed, totalGroups, profiler.last());
 
             profiler.start();
 
@@ -176,14 +188,18 @@ public class RepositoryWalker {
             val parser = new JSParser();
             val visitor = new JSVisitor();
 
-            var errors = new HashMap<String, String>();
+            WeakReference<Map<String, String>> weakErrors = new WeakReference<>(new HashMap<>());
+            WeakReference<List<Metric>> weakMetrics = new WeakReference<>(new ArrayList<>());
 
-            val metrics = new ArrayList<Metric>();
 
-            metrics.add(Metric.builder().name("project").value(project).build());
-            metrics.add(Metric.builder().name("date (dd-mm-yyyy)").value(Formatter.format.format(current)).build());
-            metrics.add(Metric.builder().name("revision").value(commit).build());
-            metrics.add(Metric.builder().name("files").value(files.size()).build());
+            weakMetrics.get().add(Metric.builder().name("project").value(project).build());
+            weakMetrics.get().add(Metric.builder().name("date (dd-mm-yyyy)").value(Formatter.format.format(current)).build());
+            weakMetrics.get().add(Metric.builder().name("revision").value(commit).build());
+            weakMetrics.get().add(Metric.builder().name("files").value(files).build());
+            // metrics.add(Metric.builder().name("project").value(project).build());
+            // metrics.add(Metric.builder().name("date (dd-mm-yyyy)").value(Formatter.format.format(current)).build());
+            // metrics.add(Metric.builder().name("revision").value(commit).build());
+            // metrics.add(Metric.builder().name("files").value(files.size()).build());
 
             val tasks = new ArrayList<Future>(threads);
             val pool = Executors.newFixedThreadPool(threads);
@@ -197,7 +213,7 @@ public class RepositoryWalker {
                         program.accept(visitor);
 
                     } catch (Exception ex) {
-                        errors.put(p + "-" + commit, ex.getMessage());
+                        weakErrors.get().put(p + "-" + commit, ex.getMessage());
                     }
                 };
 
@@ -210,31 +226,50 @@ public class RepositoryWalker {
 
             pool.shutdown();
 
-            metrics.add(Metric.builder().name("async-declarations").value(visitor.getTotalAsyncDeclarations().get()).build());
-            metrics.add(Metric.builder().name("await-declarations").value(visitor.getTotalAwaitDeclarations().get()).build());
-            metrics.add(Metric.builder().name("const-declarations").value(visitor.getTotalConstDeclaration().get()).build());
-            metrics.add(Metric.builder().name("class-declarations").value(visitor.getTotalClassDeclarations().get()).build());
-            metrics.add(Metric.builder().name("arrow-function-declarations").value(visitor.getTotalArrowDeclarations().get()).build());
-            metrics.add(Metric.builder().name("let-declarations").value(visitor.getTotalLetDeclarations().get()).build());
-            metrics.add(Metric.builder().name("export-declarations").value(visitor.getTotalExportDeclarations().get()).build());
-            metrics.add(Metric.builder().name("yield-declarations").value(visitor.getTotalYieldDeclarations().get()).build());
-            metrics.add(Metric.builder().name("import-statements").value(visitor.getTotalImportStatements().get()).build());
-            metrics.add(Metric.builder().name("promise-declarations").value(visitor.getTotalNewPromises().get()).build());
-            metrics.add(Metric.builder().name("promise-all-and-then").value(visitor.getTotalPromiseAllAndThenIdiom().get()).build());
-            metrics.add(Metric.builder().name("default-parameters").value(visitor.getTotalDefaultParameters().get()).build());
-            metrics.add(Metric.builder().name("rest-statements").value(visitor.getTotalRestStatements().get()).build());
-            metrics.add(Metric.builder().name("spread-arguments").value(visitor.getTotalSpreadArguments().get()).build());
-            metrics.add(Metric.builder().name("array-destructuring").value(visitor.getTotalArrayDestructuring().get()).build());
-            metrics.add(Metric.builder().name("object-destructuring").value(visitor.getTotalObjectDestructuring().get()).build());
-            metrics.add(Metric.builder().name("errors").value(errors.size()).build());
-            metrics.add(Metric.builder().name("statements").value(visitor.getTotalStatements().get()).build());
+            weakMetrics.get().add(Metric.builder().name("async-declarations").value(visitor.getTotalAsyncDeclarations().get())
+                    .build());
+            weakMetrics.get().add(Metric.builder().name("await-declarations").value(visitor.getTotalAwaitDeclarations().get())
+                    .build());
+            weakMetrics.get().add(Metric.builder().name("const-declarations").value(visitor.getTotalConstDeclaration().get())
+                    .build());
+            weakMetrics.get().add(Metric.builder().name("class-declarations").value(visitor.getTotalClassDeclarations().get())
+                    .build());
+            weakMetrics.get().add(Metric.builder().name("arrow-function-declarations")
+                    .value(visitor.getTotalArrowDeclarations().get()).build());
+            weakMetrics.get().add(
+                    Metric.builder().name("let-declarations").value(visitor.getTotalLetDeclarations().get()).build());
+            weakMetrics.get().add(Metric.builder().name("export-declarations").value(visitor.getTotalExportDeclarations().get())
+                    .build());
+            weakMetrics.get().add(Metric.builder().name("yield-declarations").value(visitor.getTotalYieldDeclarations().get())
+                    .build());
+            weakMetrics.get().add(
+                    Metric.builder().name("import-statements").value(visitor.getTotalImportStatements().get()).build());
+            weakMetrics.get().add(
+                    Metric.builder().name("promise-declarations").value(visitor.getTotalNewPromises().get()).build());
+            weakMetrics.get().add(Metric.builder().name("promise-all-and-then")
+                    .value(visitor.getTotalPromiseAllAndThenIdiom().get()).build());
+            weakMetrics.get().add(Metric.builder().name("default-parameters").value(visitor.getTotalDefaultParameters().get())
+                    .build());
+            weakMetrics.get().add(Metric.builder().name("rest-statements").value(visitor.getTotalRestStatements().get()).build());
+            weakMetrics.get().add(
+                    Metric.builder().name("spread-arguments").value(visitor.getTotalSpreadArguments().get()).build());
+            weakMetrics.get().add(Metric.builder().name("array-destructuring").value(visitor.getTotalArrayDestructuring().get())
+                    .build());
+            weakMetrics.get().add(Metric.builder().name("object-destructuring").value(visitor.getTotalObjectDestructuring().get())
+                    .build());
+            weakMetrics.get().add(Metric.builder().name("errors").value(weakMetrics.get().size()).build());
+            weakMetrics.get().add(Metric.builder().name("statements").value(visitor.getTotalStatements().get()).build());
 
             System.gc();
 
             summary.date(current)
                     .revision(head.toString())
-                    .metrics(metrics)
-                    .errors(errors);
+                    .metrics(weakMetrics)
+                    .errors(weakErrors);
+
+        weakErrors.clear();
+        weakMetrics.clear();
+
         } catch (Exception ex) {
             val commit = commits.get(current).toString().split(" ")[1];
 
