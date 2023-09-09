@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -32,23 +31,20 @@ public class RepositoryWalkerTask implements Runnable {
         val reportErrors = Paths.get(output.toString(), walker.project + "-errors.txt");
 
         try {
-            // Mantenha summaries como ConcurrentLinkedQueue<Summary>
-            ConcurrentLinkedQueue<WeakReference<Summary>> weakSummaries = new ConcurrentLinkedQueue<>();
+            ConcurrentLinkedQueue<Summary> summaries = new ConcurrentLinkedQueue<>();
 
-            // Preencha weakSummaries com referências fracas para cada resumo
             walker.traverse(interval.begin, interval.end, steps, threads)
-                    .forEach(summary -> weakSummaries.add(new WeakReference<>(summary)));
+                    .forEach(summaries::add);
 
             val content = new StringBuilder();
             val errors = new StringBuilder();
 
-            weakSummaries.forEach(weakSummary -> {
-                val summary = weakSummary.get();
-
+            while (!summaries.isEmpty()) {
+                val summary = summaries.poll();
                 if (summary != null) {
                     content.append(summary.values()).append("\n");
 
-                    val errorsMap = summary.errors.get();
+                    val errorsMap = summary.errors;
 
                     if (errorsMap != null) {
                         errorsMap.forEach((k, v) -> {
@@ -56,10 +52,10 @@ public class RepositoryWalkerTask implements Runnable {
                         });
                     }
                 }
-            });
+            }
 
             try (val reportWriter = new BufferedWriter(new FileWriter(reportFile.toFile()));
-                    val errorsWriter = new BufferedWriter(new FileWriter(reportErrors.toFile()))) {
+                 val errorsWriter = new BufferedWriter(new FileWriter(reportErrors.toFile()))) {
 
                 reportWriter.write(Summary.header());
                 reportWriter.write(content.toString());
@@ -74,6 +70,8 @@ public class RepositoryWalkerTask implements Runnable {
         } catch (IOException ex) {
             logger.error("failed to create a report/errors file for project {}", walker.project);
         } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
             logger.error("failed to traverse project {}", walker.project);
         }
     }

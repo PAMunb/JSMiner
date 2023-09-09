@@ -3,7 +3,6 @@ package br.unb.cic.js.miner.metrics;
 import lombok.Builder;
 import lombok.val;
 
-import java.lang.ref.WeakReference;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +17,8 @@ public class Summary {
     private final Date date; // date of git commit
     private final String revision; // commit hash
 
-    public final WeakReference<List<Metric>> metrics;
-    public final WeakReference<Map<String, String>> errors;
+    public final List<Metric> metrics;
+    public final Map<String, String> errors;
 
     /**
      * Returns a string containing the header for the CSV report with default fields
@@ -52,16 +51,10 @@ public class Summary {
     }
 
     public String values() {
-        val metricsList = metrics.get();
-    
-        if (metricsList == null) {
-            return "";
-        }
-
         val l = new StringBuilder();
-    
-        metricsList.forEach(m -> l.append(m.value.toString()).append(","));
-    
+
+        metrics.forEach(m -> l.append(m.value.toString()).append(","));
+
         return l.toString();
     }
 }
