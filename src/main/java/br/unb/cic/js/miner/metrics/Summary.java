@@ -53,15 +53,9 @@ public class Summary {
 
     public String values() {
         val l = new StringBuilder();
-    
-        for (Metric metric : metrics) {
-            if (metric.value != null) {
-                l.append(metric.value.toString()).append(",");
-            } else {
-                l.append("0,"); // Substituir valor nulo por zero
-            }
-        }
-    
+
+        metrics.forEach(m -> l.append(m.value.toString()).append(","));
+
         return l.toString();
     }
 }

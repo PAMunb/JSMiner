@@ -19,11 +19,11 @@ public class RepositoryWalkerTask implements Runnable {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public final Path output;
-    public final BufferedWriter results;
     public final RepositoryWalker walker;
     public final Interval interval;
     public final int threads;
     public final int steps;
+    public final BufferedWriter results;
 
     @Override
     public void run() {
@@ -34,48 +34,55 @@ public class RepositoryWalkerTask implements Runnable {
             ConcurrentLinkedQueue<Summary> summaries = new ConcurrentLinkedQueue<>();
 
             walker.traverse(interval.begin, interval.end, steps, threads)
+                    .stream()
+                    .filter(summary -> summary != null)
                     .forEach(summaries::add);
-
-            val content = new StringBuilder();
-            val errors = new StringBuilder();
-
-            while (!summaries.isEmpty()) {
-                val summary = summaries.poll();
-                if (summary != null) {
-                    content.append(summary.values()).append("\n");
-
-                    val errorsMap = summary.errors;
-
-                    if (errorsMap != null) {
-                        errorsMap.forEach((k, v) -> {
-                            errors.append(k).append("\n").append(v).append("\n-----------------------\n");
-                        });
-                    }
-                }
-            }
 
             try (val reportWriter = new BufferedWriter(new FileWriter(reportFile.toFile()));
                  val errorsWriter = new BufferedWriter(new FileWriter(reportErrors.toFile()))) {
 
                 reportWriter.write(Summary.header());
-                reportWriter.write(content.toString());
+
+                summaries.forEach(summary -> {
+                    try {
+                        if (summary != null) {
+                            reportWriter.write(summary.values() + "\n");
+                        }
+                    } catch (IOException e) {
+                        logger.error("Failed to write summary data for project {}", walker.project);
+                        e.printStackTrace();
+                    }
+                });
+
                 reportWriter.flush();
 
-                errorsWriter.write(errors.toString());
+                errorsWriter.write(summariesToErrors(summaries));
                 errorsWriter.flush();
             } catch (IOException ex) {
-                logger.error("failed to write on report/errors file for project {}", walker.project);
-                System.out.println(ex.getStackTrace());
+                logger.error("Failed to write on report/errors file for project {}", walker.project);
+                ex.printStackTrace();
             }
 
         } catch (IOException ex) {
-            logger.error("failed to create a report/errors file for project {}", walker.project);
-            System.out.println(ex.getStackTrace());
-        } catch (Exception ex) {
+            logger.error("Failed to create a report/errors file for project {}", walker.project);
             ex.printStackTrace();
-            System.out.println(ex.getMessage());
-            logger.error("failed to traverse project {}", walker.project);
-            System.out.println(ex.getStackTrace());
+        } catch (Exception ex) {
+            logger.error("Failed to traverse project {}", walker.project);
+            ex.printStackTrace();
         }
+    }
+
+    private String summariesToErrors(ConcurrentLinkedQueue<Summary> summaries) {
+        StringBuilder errors = new StringBuilder();
+        
+        summaries.forEach(summary -> {
+            if (summary.errors != null) {
+                summary.errors.forEach((k, v) -> {
+                    errors.append(k).append("\n").append(v).append("\n-----------------------\n");
+                });
+            }
+        });
+
+        return errors.toString();
     }
 }
