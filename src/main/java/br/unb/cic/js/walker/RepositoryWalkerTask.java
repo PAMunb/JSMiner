@@ -65,14 +65,17 @@ public class RepositoryWalkerTask implements Runnable {
                 errorsWriter.flush();
             } catch (IOException ex) {
                 logger.error("failed to write on report/errors file for project {}", walker.project);
+                System.out.println(ex.getStackTrace());
             }
 
         } catch (IOException ex) {
             logger.error("failed to create a report/errors file for project {}", walker.project);
+            System.out.println(ex.getStackTrace());
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println(ex.getMessage());
             logger.error("failed to traverse project {}", walker.project);
+            System.out.println(ex.getStackTrace());
         }
     }
 }
