@@ -11,3 +11,6 @@ dataset/*
 js-miner-out/*
 
 .zip
+
+jsminer-out/*
+scripts/*.pdf
