@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -80,8 +81,23 @@ def fit_and_plot_trends(df, feature, span):
     y_sqrt = total_by_month['sqrt_total']
     
     # Cálculo da suavização loess
-    loess_result = lowess(total_by_month['sqrt_total'], total_by_month['year_month'].index, frac=span)
+    loess_result = lowess(total_by_month['total'], total_by_month['year_month'].index, frac=span)
     total_by_month['loess'] = loess_result[:, 1]
+
+    # Encontrar o primeiro ponto de inclinação significativa
+    window_size = 12  # Tamanho da janela deslizante
+    slopes = []
+    for i in range(len(total_by_month) - window_size + 1):
+        x_window = np.arange(i, i + window_size)  # Corrigir o eixo x
+        y_window = total_by_month['loess'].iloc[i:i + window_size]
+
+        # Ajustar um modelo de regressão linear
+        slope, _ = np.polyfit(x_window, y_window, 1)
+        slopes.append(slope)
+
+    # Encontrar o primeiro ponto de inclinação significativa
+    idx = np.argmax(slopes)
+    start_point = (total_by_month['year_month'].iloc[idx], total_by_month['loess'].iloc[idx])
 
     # Configurações do gráfico
     plt.figure(figsize=(12, 8))
@@ -93,7 +109,7 @@ def fit_and_plot_trends(df, feature, span):
     # sns.lineplot(data=total_by_month, x='year_month', y='sqrt_total', color='darkgray', label='Total Occurrences', errorbar=None, estimator=None, lw=2)
 
     # Calcular a tendência suavizada (loess) normalizada
-    sns.lineplot(data=total_by_month, x='year_month', y='loess', color='darkblue', label='Smoothed Trend', errorbar=None, estimator=None, lw=2)
+    sns.lineplot(data=total_by_month, x='year_month', y='loess', color='darkblue', errorbar=None, estimator=None, lw=2)
 
     # Configurações do gráfico
     plt.title(f'{feature.replace("_", " ").title()} Trend')
@@ -104,9 +120,11 @@ def fit_and_plot_trends(df, feature, span):
     x_ticks = np.arange(0, len(total_by_month), 12)  # Por exemplo, mostra um ponto a cada 12 meses
     plt.xticks(x_ticks, total_by_month['year_month'].iloc[x_ticks].apply(lambda x: x[:4]), rotation=45)  # Exibe apenas o ano
 
-    plt.legend()
+    # Adicionar a linha linear que indica o início da tendência
+    # plt.axvline(x=start_point[0], color='red', linestyle='--', label='Trend Start')
 
     # Exibir o gráfico
+    # plt.legend()
     plt.savefig(f'trend_{feature}.pdf')
     plt.close()
 

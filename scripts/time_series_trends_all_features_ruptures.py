@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -38,6 +39,14 @@ melted_df['total'] = pd.to_numeric(melted_df['total'], errors='coerce')
 melted_df = melted_df.sort_values(by='year_month')
 
 # Lista de recursos (features)
+# features = [
+#     'async_declarations',
+#     'const_declarations',
+#     'arrow_function_declarations',
+#     'let_declarations',
+#     'object_destructuring'
+# ]
+
 features = [
     'async_declarations',
     'await_declarations',
@@ -81,14 +90,30 @@ for feature in features:
     loess_result = lowess(total_by_month['sqrt_total'], total_by_month.index, frac=0.1)
     total_by_month['loess'] = loess_result[:, 1]
 
-    # Plotar a série temporal original normalizada
-    # sns.lineplot(data=total_by_month, x='year_month', y='sqrt_total', label=f'{feature.replace("_", " ").title()} - Total Occurrences', errorbar=None, estimator=None, lw=2)
+    # Encontrar o primeiro ponto de inclinação significativa
+    window_size = 12  # Tamanho da janela deslizante
+    slopes = []
+    for i in range(len(total_by_month) - window_size + 1):
+        x_window = np.arange(i, i + window_size)  # Corrigir o eixo x
+        y_window = total_by_month['loess'].iloc[i:i + window_size]
 
-    # Calcular a tendência suavizada (loess) normalizada
-    sns.lineplot(data=total_by_month, x='year_month', y='loess', label=f'{feature.replace("_", " ").title()}', errorbar=None, estimator=None, lw=2)
+        # Ajustar um modelo de regressão linear
+        slope, _ = np.polyfit(x_window, y_window, 1)
+        slopes.append(slope)
+
+    # Encontrar o primeiro ponto de inclinação significativa
+    idx = np.argmax(slopes)
+    start_point = (total_by_month['year_month'].iloc[idx], total_by_month['loess'].iloc[idx])
+
+   # Calcular a tendência suavizada (loess) normalizada
+    # sns.lineplot(data=total_by_month, x='year_month', y='loess', label=f'{feature.replace("_", " ").title()}', errorbar=None, estimator=None, lw=2)
+    sns.lineplot(data=total_by_month, x='year_month', y='sqrt_total', label=f'{feature.replace("_", " ").title()} - Total Occurrences', errorbar=None, estimator=None, lw=2)
+
+    # Marcar o primeiro ponto de inclinação significativa
+    plt.plot(start_point[0], start_point[1], 'ro')
 
 # Configurações do gráfico
-plt.title('Smoothed Trends of Different Features')
+plt.title('Smoothed Trends of Different Features with Start Point')
 plt.xlabel('Date (Year)')
 plt.ylabel('Total Occurrences (#)')
 plt.xticks(rotation=45)
@@ -99,6 +124,6 @@ plt.xticks(x_ticks, total_by_month['year_month'].iloc[x_ticks].apply(lambda x: x
 
 plt.legend(fontsize='small')
 plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-
 # Exibir o gráfico
-plt.savefig('all_features_trends.pdf', bbox_inches='tight')  # Use bbox_inches='tight' para evitar que a legenda seja cortada
+plt.savefig('all_features_trends_with_start.pdf', bbox_inches='tight')  # Use bbox_inches='tight' para evitar que a legenda seja cortada
+plt.show()

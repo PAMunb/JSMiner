@@ -79,7 +79,7 @@ merged_df.set_index('feature', inplace=True)
 merged_df.index.name = 'Feature'
 
 # Crie uma lista com os novos nomes das colunas na ordem desejada
-table_columns = ['Total of Occurrences (#)', 'Projects Adoption (%)', 'First Occurrence (%Y~%m)']
+table_columns = ['Total of Occurrences (#)', 'Projects Adoption (%)', 'First Occurrence']
 
 features_mapping = {
     'async_declarations': 'Async Declarations',
@@ -106,6 +106,7 @@ merged_df.columns = table_columns
 # Renomear os valores na coluna 'Feature' usando o mapeamento
 merged_df.index = merged_df.index.map(features_mapping)
 
+merged_df = merged_df.sort_values(by='Projects Adoption (%)',ascending=False)
 
 tablefmt = 'latex_booktabs'  # Formato LaTeX
 colalign = ("right", "right", "right", "right")
