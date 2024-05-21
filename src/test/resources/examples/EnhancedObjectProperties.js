@@ -14,6 +14,12 @@ obj = {
   }
 }
 
+class Car {
+  constructor(make, model) {
+    this[make + model] = 'New Car';
+  }
+}
+
 let uname = 'Anil',  
     udivision = 'First';  
    
@@ -32,11 +38,46 @@ var emp = {
 }  
 console.log(emp);
 
+const obj = {
+  ['prop_' + Math.random()]: 'value'
+};
+esse
+const obj = {
+  user: {
+    [prop]: '123 Street'
+  }
+};
+
+const obj = {
+  name: 'Bob',
+  [getProperty()]: 30
+};
+
 
 let obj = {
     foo: "bar",
     [ "baz" + quux() ]: 42
 }
+
+function createCar(make, model) {
+  const car = {};
+  car[make + model] = 'New Car';
+  return car;
+}
+
+const myCar = createCar('Toyota', 'Corolla');
+console.log(myCar['ToyotaCorolla']); // Output: 'New Car' 
+
+const person = {
+  firstName: 'John',
+  lastName: 'Doe',
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+};
+
+const property = 'Name';
+console.log(person['getFull' + property]()); // Output: 'John Doe' 
 
 
 //------------------------------------------------------------------------------

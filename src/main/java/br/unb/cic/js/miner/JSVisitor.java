@@ -404,7 +404,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			if(ctx.getText().contains("[") && ctx.getText().contains("]")){
 				totalComputedProperties.incrementAndGet();
 				changeFilesOccurrences(Feature.ComputedProperties);
-			}else if(!ctx.getText().contains(":")){
+			}else if(!ctx.getText().contains(":") && !ctx.propertyAssignment().isEmpty()){
 				totalObjectProperties.incrementAndGet();
 				changeFilesOccurrences(Feature.ObjectProperties);
 	        }
