@@ -2,10 +2,6 @@ package br.unb.cic.js.miner;
 
 import br.unb.cic.js.miner.JavaScriptParser.*;
 import lombok.Getter;
-import lombok.val;
-
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -57,7 +53,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		super();
 		featureOccurrences = new HashMap<>();
 		for (Feature f : Feature.values()) {
-			featureOccurrences.put(f, new HashSet());
+			featureOccurrences.put(f, new HashSet<>());
 		}
 	}
 	
@@ -112,36 +108,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitStatement(StatementContext ctx) {
-		
 		totalStatements.incrementAndGet();
-		
-//		val statements = new ArrayList<Boolean>();
-//
-//		statements.add(ctx.variableStatement() != null);
-//		statements.add(ctx.importStatement() != null);
-//		statements.add(ctx.block() != null);
-//		statements.add(ctx.exportStatement() != null);
-//		statements.add(ctx.emptyStatement_() != null);
-//		statements.add(ctx.classDeclaration() != null);
-//		statements.add(ctx.expressionStatement() != null);
-//		statements.add(ctx.ifStatement() != null);
-//		statements.add(ctx.iterationStatement() != null);
-//		statements.add(ctx.continueStatement() != null);
-//		statements.add(ctx.breakStatement() != null);
-//		statements.add(ctx.returnStatement() != null);
-//		statements.add(ctx.yieldStatement() != null);
-//		statements.add(ctx.withStatement() != null);
-//		statements.add(ctx.labelledStatement() != null);
-//		statements.add(ctx.switchStatement() != null);
-//		statements.add(ctx.throwStatement() != null);
-//		statements.add(ctx.tryStatement() != null);
-//		statements.add(ctx.debuggerStatement() != null);
-//		statements.add(ctx.functionDeclaration() != null);
-//
-//		if (statements.stream().reduce((m, n) -> m || n).orElse(false)) {
-//			totalStatements.incrementAndGet();
-//		}
-
 		return super.visitStatement(ctx);
 	}
 
