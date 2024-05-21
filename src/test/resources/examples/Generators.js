@@ -148,3 +148,4 @@ const asyncIterator = (async function* () {
   yield 3;
 })();
 
+yield yield __await(table.get(item));
