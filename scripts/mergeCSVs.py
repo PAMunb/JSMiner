@@ -1,10 +1,8 @@
-import glob
-import csv
 import os
 import sys
+import csv
 
-
-#python3 mergeCSVs.py ../../results/jsminer-out/ > collections-failed.txt
+# python3 mergeCSVs.py ../../results/jsminer-out/ > collections-failed.txt
 
 cwd = sys.argv[1]
 
@@ -19,10 +17,10 @@ writed_lines = []
 
 with open(output_file, 'w', newline='') as outfile:
     writer = None
+    num_columns = None  # Variable to store the number of columns in the header
 
     for csv_file in csv_files:
-        
-        with open(cwd+csv_file, 'r') as infile:
+        with open(os.path.join(cwd, csv_file), 'r') as infile:
             reader = csv.reader(infile, delimiter=delimiter)
 
             has_header = csv.Sniffer().sniff(infile.readline())
@@ -35,6 +33,9 @@ with open(output_file, 'w', newline='') as outfile:
                     header = next(reader)
                     header = [col.replace('-', '_') for col in header]
                     writer.writerow(header)
+                    num_columns = len(header)+1  # Get the number of columns from the header
+                    # print(num_columns)
+                    
 
             if has_header:
                 next(reader)
@@ -42,23 +43,22 @@ with open(output_file, 'w', newline='') as outfile:
             previous_row = None  # To store the previous row
 
             for row in reader:
-                if len(row) == 33:
-                    last_element = row[-1]
-                    if last_element == '':
-                        row = list(filter(lambda x: x != '', row))
-                    # Check if files reduced by more than 50% compared to the previous row
-                    if previous_row is not None and int(row[3]) < 0.5 * int(previous_row[3]):
-                        lost_lines.append(row)
-                    else:
-                        writer.writerow(row)
-                        writed_lines.append(row)
-                        # Update the previous row for the next iteration
-                        previous_row = row
+                # print(len(row))
+                # sys.exit()
+                if len(row) == num_columns:
+                    # last_element = row[-1]
+                    # if last_element == '':
+                    #     row = list(filter(lambda x: x != '', row))
+                    # # Check if files reduced by more than 50% compared to the previous row
+                    # if previous_row is not None and int(row[3]) < 0.5 * int(previous_row[3]):
+                    #     lost_lines.append(row)
+                    # else:
+                    writer.writerow(row)
+                    writed_lines.append(row)
+                    # Update the previous row for the next iteration
+                    previous_row = row
                 else:
                     lost_lines.append(row)
-
-
-
 
 print('Merge finished:', output_file)
 print('Writed lines:', len(writed_lines))

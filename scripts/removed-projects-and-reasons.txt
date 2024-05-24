@@ -1,0 +1,70 @@
+../../jsminer-out/zotero-errors.txt: 88 'Checkout conflict' lines
+../../jsminer-out/www.tjvantoll.com-errors.txt: 2 'Checkout conflict' lines
+../../jsminer-out/sequenceserver-errors.txt: 16 'Checkout conflict' lines
+../../jsminer-out/qooxdoo-errors.txt: 21 'Checkout conflict' lines
+../../jsminer-out/prey-node-client-errors.txt: 1 'Checkout conflict' lines
+../../jsminer-out/opendsa-errors.txt: 2 'Checkout conflict' lines
+../../jsminer-out/mediathread-errors.txt: 16 'Checkout conflict' lines
+../../jsminer-out/iteexe-errors.txt: 1 'Checkout conflict' lines
+../../jsminer-out/geonode-errors.txt: 2 'Checkout conflict' lines
+../../jsminer-out/etherpad-lite-errors.txt: 125 'Checkout conflict' lines
+../../jsminer-out/e2openplugin-openwebif-errors.txt: 1 'Checkout conflict' lines
+../../jsminer-out/connect-api-examples-errors.txt: 4 'Checkout conflict' lines
+../../jsminer-out/cartodb-errors.txt: 3 'Checkout conflict' lines
+../../jsminer-out/bigbluebutton-errors.txt: 14 'Checkout conflict' lines
+
+
+
+../../jsminer-out/biwascheme-errors.txt: 6 'Exception:' lines
+../../jsminer-out/browserify-errors.txt: 34 'Exception:' lines
+../../jsminer-out/canjs-errors.txt: 49 'Exception:' lines
+../../jsminer-out/node-tap-errors.txt: 2 'Exception:' lines
+../../jsminer-out/paper.js-errors.txt: 28 'Exception:' lines
+../../jsminer-out/patterns-errors.txt: 1 'Exception:' lines
+../../jsminer-out/tapjs-errors.txt: 2 'Exception:' lines
+
+# projects that present checkout conflicts or exceptions during the data gathering
+
+bigbluebutton
+biwascheme
+browserify
+canjs
+cartodb
+connect-api-examples
+e2openplugin-openwebif
+etherpad-lite
+geonode
+iteexe
+jw-community
+mediathread
+node-tap
+one
+opendsa
+paper.js
+patterns
+prey-node-client
+qooxdoo
+salesforcemobilesdk-shared
+sequenceserver
+tapjs
+www.tjvantoll.com
+zotero
+
+# guidelines for JavaScript development
+
+acornjs	acorn
+mozilla	rhino
+
+# projects that present OutOfMemory during the data gathering
+
+hue
+jw-community
+cesium
+limesurvey
+countly-server
+
+# project that present outline statments from dependencies mixed with own files
+erp5
+
+# fork|copy from another project, but not created as a fork on github
+releases-comm-central

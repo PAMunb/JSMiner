@@ -1,10 +1,10 @@
 import pandas as pd
 
 # Carregue o DataFrame original
-df_original = pd.read_csv('~/Documents/JSMiner/scripts/results.csv', delimiter=',')
+df_original = pd.read_csv('~/Documents/JSMiner/scripts/filtered-results.csv', delimiter=',')
 # Defina a coluna 'date' como data
 df_original['date'] = pd.to_datetime(df_original['date'], format='%d-%m-%Y')  # Use '%d-%m-%Y' em vez de '%Y-%m-%d'
-# df_original['date'] = df_original['date'].dt.strftime('%d-%m-%Y')
+
 # Crie um DataFrame final vazio para concatenar os resultados de cada projeto
 df_final = pd.DataFrame(columns=df_original.columns)
 
@@ -30,7 +30,7 @@ for projeto in projetos_unicos:
 
     # Inicialize as variáveis para rastrear a linha anterior
     linha_anterior = df_projeto.iloc[0].copy()
-    # print(linha_anterior)    
+    
     # Itere pelas linhas do DataFrame do projeto (começando da segunda linha)
     for index, row in df_projeto.sort_values(by='date').iterrows():
         if str(row['revision']) != str(linha_anterior['revision']) and str(linha_anterior['revision']) != '0' and str(row['revision']) == '0':
