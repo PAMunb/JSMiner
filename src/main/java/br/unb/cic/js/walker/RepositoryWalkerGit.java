@@ -54,8 +54,10 @@ final class RepositoryWalkerGit {
 	public static Iterable<RevCommit> revisions(Repository repository, Boolean merges) throws Exception {
 		try (Git git = new Git(repository)) {
 			String latestBranchName = getBranchNameFromLatestCommit(repository, git);
+			// List<String> targetBranches = removerDuplicates(
+			// 		Arrays.asList("main", "master", latestBranchName.substring(latestBranchName.lastIndexOf("/") + 1)));
 			List<String> targetBranches = removerDuplicates(
-					Arrays.asList("main", "master", latestBranchName.substring(latestBranchName.lastIndexOf("/") + 1)));
+				Arrays.asList(latestBranchName.substring(latestBranchName.lastIndexOf("/") + 1)));
 
 			boolean startsWithAny = false;
 
