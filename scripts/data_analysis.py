@@ -1,3 +1,4 @@
+import sys
 import pandas as pd
 from tabulate import tabulate
 import seaborn as sns
@@ -6,7 +7,13 @@ import matplotlib.pyplot as plt
 # Carregue os dados
 df = pd.read_csv('~/Documents/JSMiner/scripts/results-without-gaps.csv')
 
-df = df.drop(columns=['revision', 'errors'])
+df = df.drop(columns=['revision', 'errors','async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files',
+'arrow_function_declarations_files','let_declarations_files','export_declarations_files','yield_declarations_files',
+'import_statements_files','promise_declarations_files','promise_all_and_then_files','default_parameters_files',
+'rest_statements_files','spread_arguments_files','array_destructuring_files','object_destructuring_files',
+'optional_chain_files','template_string_expressions_files','object_properties_files','null_coalesce_operators_files',
+'regular_expressions_files','hashbang_comments_files','exponentiation_assignments_files','private_fields_files',
+'numeric_separator_files','big_int_files','computed_property_files'])
 df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
 
 last_revision_idx = df.groupby(['project'])['date'].idxmax()
@@ -38,8 +45,8 @@ colalign = ("l", "r", "r", "r", "r", "r")
 # Agora você pode continuar com a criação da tabela LaTeX
 table_summary = tabulate(summary, headers='keys', tablefmt=tablefmt, colalign=colalign)
 
-print(table_summary)
-
+# print(table_summary)
+# sys.exit()
 # Filter out features with median equal to 0
 nonzero_median_summary = summary[summary['median'] != 0]
 
@@ -50,15 +57,15 @@ plt.xlabel('Features')
 plt.ylabel('Total')
 
 # Calculate median by feature for non-zero features
-medians = nonzero_median_summary.set_index('feature')['median']
+# medians = nonzero_median_summary.set_index('feature')['median']
 
-# Add median labels to the plot
-for feature, median in medians.items():
-    plt.text(x=feature, y=median, s=round(median, 2), ha='center', va='bottom')
+# # Add median labels to the plot
+# for feature, median in medians.items():
+#     plt.text(x=feature, y=median, s=round(median, 2), ha='center', va='bottom')
 
-plt.xticks(rotation=45)
+# plt.xticks(rotation=45)
 
-plt.show()
+# plt.show()
 
 
 pd.set_option('display.float_format', '{:.3f}'.format)
@@ -85,7 +92,7 @@ summary_project_features = df_filtered.merge(df_project_counts, on='feature', ho
 summary_project_features['percentage (%)'] = (summary_project_features['projects_with_occurrences'] / total_projects) * 100
 summary_project_features = summary_project_features[['feature', 'percentage (%)']]
 
-print(summary_project_features)
+# print(summary_project_features)
 
 #first adoption
 id_vars = ["project", "date", "statements", "files"]
@@ -158,6 +165,10 @@ features_mapping = {
     'exponentiation_assignments': 'Exponentiation Assignments',
     'private_fields': 'Private Fields',
     'numeric_separator': 'Numeric Separator',
+    'object_properties': 'Enhanced Object Properties',
+    'big_int':'BigInt',
+    'computed_property':'Computed Property',
+    'regular_expressions':'Regular Expression',
 }
 
 # Renomear as colunas
