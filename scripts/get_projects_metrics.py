@@ -7,11 +7,23 @@ def obter_estatisticas_projeto(diretorio_projeto):
     # Execute o comando cloc para obter as estatísticas do projeto
     resultado_cloc = subprocess.run(['cloc', '--include-lang=JavaScript', '--json', diretorio_projeto], capture_output=True, text=True)
     
+    # Verifique se o comando cloc foi executado com sucesso
+    if resultado_cloc.returncode != 0:
+        print(f"Erro ao executar cloc no projeto {diretorio_projeto}: {resultado_cloc.stderr}")
+        return {}
+    
     # Analise o JSON de saída do cloc para obter as estatísticas desejadas
+    json_cloc = resultado_cloc.stdout
+    if not json_cloc.strip():
+        print(f"Nenhum resultado JSON do cloc para o projeto {diretorio_projeto}")
+        return {}
+
     estatisticas = {}
-    if resultado_cloc.returncode == 0:
-        json_cloc = resultado_cloc.stdout
+    try:
         estatisticas = obter_estatisticas_do_json(json_cloc)
+    except json.JSONDecodeError as e:
+        print(f"Erro ao decodificar JSON do cloc para o projeto {diretorio_projeto}: {e}")
+        print(f"Saída do cloc: {json_cloc}")
     
     return estatisticas
 
@@ -40,19 +52,19 @@ def gerar_csv(lista_projetos, arquivo_csv):
         
         # Escreva as estatísticas para cada projeto
         for projeto in lista_projetos:
-            print("analyzing project:",projeto)
+            print("Analisando projeto:", projeto)
             estatisticas = obter_estatisticas_projeto(projeto)
             estatisticas['project'] = os.path.basename(projeto)
             writer.writerow(estatisticas)
 
 # Diretório contendo várias pastas de projetos do GitHub
-diretorio_base = r'/home/walterlucas/Downloads/dataset'
+diretorio_base = r'../../../Downloads/dataset'
 
 # Lista de projetos (subdiretórios)
 projetos = [os.path.join(diretorio_base, projeto) for projeto in os.listdir(diretorio_base) if os.path.isdir(os.path.join(diretorio_base, projeto))]
 
 # Arquivo CSV de saída
-arquivo_csv_saida = r'/home/walterlucas/Documents/JSMiner/scripts/projects_cloc_metrics.csv'
+arquivo_csv_saida = r'projects_cloc_metrics.csv'
 
 # Gere o CSV com as estatísticas para cada projeto
 gerar_csv(projetos, arquivo_csv_saida)

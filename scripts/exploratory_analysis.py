@@ -9,7 +9,7 @@ from scipy.stats import kendalltau
 import os
 
 # Read the CSV file into a DataFrame
-df = pd.read_csv('/home/walterlucas/Documents/JSMiner/scripts/results-without-gaps.csv')
+df = pd.read_csv('results-without-gaps.csv')
 
 # Drop unnecessary columns
 df = df.drop(columns=['revision', 'errors','async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files',

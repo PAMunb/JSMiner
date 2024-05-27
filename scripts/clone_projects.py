@@ -14,7 +14,7 @@ count = 1
 with open(sys.argv[2], newline='', encoding='latin-1') as f:
     projects = csv.reader(f, delimiter=',')
     for project in projects:
-        if project[1] == "name" or count > 10:
+        if project[1] == "name":
             continue
         print(count)
         projectName = project[1].split('/')
