@@ -76,7 +76,7 @@ total_by_feature = melted_df.groupby('feature')['total'].sum().reset_index()
 
 total_projects = df['project'].nunique()
 
-# print(total_projects)
+print(total_projects)
 
 # Verificar se a feature tem pelo menos uma ocorrência
 df_feature_counts = melted_df.groupby('feature')['total'].sum().reset_index()

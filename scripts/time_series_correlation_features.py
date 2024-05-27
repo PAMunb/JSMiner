@@ -7,7 +7,14 @@ from statsmodels.nonparametric.smoothers_lowess import lowess
 
 df = pd.read_csv('~/Documents/JSMiner/scripts/results-without-gaps.csv')
 
-df = df.drop(columns=['revision', 'errors'])
+df = df.drop(columns=['revision', 'errors','async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files',
+'arrow_function_declarations_files','let_declarations_files','export_declarations_files','yield_declarations_files',
+'import_statements_files','promise_declarations_files','promise_all_and_then_files','default_parameters_files',
+'rest_statements_files','spread_arguments_files','array_destructuring_files','object_destructuring_files',
+'optional_chain_files','template_string_expressions_files','object_properties_files','null_coalesce_operators_files',
+'regular_expressions_files','hashbang_comments_files','exponentiation_assignments_files','private_fields_files',
+'numeric_separator_files','big_int_files','computed_property_files'])
+
 df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
 
 df['year_month'] = df['date'].dt.strftime('%Y-%m')
@@ -44,25 +51,30 @@ features = [
     'async_declarations',
     'await_declarations',
     'const_declarations',
-    'class_declarations',
     'arrow_function_declarations',
     'let_declarations',
     'export_declarations',
     'import_statements',
-    'promise_declarations',
-    'promise_all_and_then',
+    'class_declarations',
     'default_parameters',
     'rest_statements',
-    'spread_arguments',
     'array_destructuring',
+    'promise_declarations',
+    'promise_all_and_then',
+    'spread_arguments',
     'object_destructuring',
-    # 'yield_declarations',
+    'yield_declarations',
     'optional_chain',
     'template_string_expressions',
-    # 'null_coalesce_operators',
-    # 'hashbang_comments',
-    # 'private_fields',
-    # 'numeric_separator',
+    'null_coalesce_operators',
+    'hashbang_comments',
+    # 'exponentiation_assignments',
+    'private_fields',
+    'numeric_separator',
+    'object_properties',
+    'big_int',
+    'computed_property',
+    'regular_expressions'
 ]
 
 # Calculate the correlation among selected features, files, and statements
@@ -97,17 +109,21 @@ features_mapping = {
     'template_string_expressions': 'Template String Expressions',
     'null_coalesce_operators': 'Null Coalesce Operators',
     'hashbang_comments': 'Hashbang Comments',
-    'exponentiation_assignments': 'Exponentiation Assignments',
+    # 'exponentiation_assignments': 'Exponentiation Assignments',
     'private_fields': 'Private Fields',
     'numeric_separator': 'Numeric Separator',
+    'object_properties': 'Enhanced Object Properties',
+    'big_int':'BigInt',
+    'computed_property':'Computed Property',
+    'regular_expressions':'Regular Expression',
     'files': 'Files',
     'statements': 'Statements',
 }
 
 feature_names = [features_mapping[feature] for feature in correlation_matrix.columns]
 # Plot the correlation matrix
-plt.figure(figsize=(12, 10))
-heatmap = sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f", cbar=True, square=True, annot_kws={"size": 10})
+plt.figure(figsize=(16, 14))
+heatmap = sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f", cbar=True, square=True, annot_kws={"size": 8})
 plt.title('Correlation Matrix')
 
 # Mapeando os nomes das features para os y-labels

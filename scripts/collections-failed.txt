@@ -1,5 +1,5 @@
 Merge finished: results.csv
-Writed lines: 20305
+Writed lines: 20693
 Lost lines: 630
 ['browserify', '17-07-2015', '59cee8675f3e34fae792e83e25db16428e6f7a4f', '']
 ['browserify', '24-08-2015', '1b73d9b0a24c0c0352a1721e03a82bdcacf4dcd7', '']

@@ -12,7 +12,13 @@ import os
 df = pd.read_csv('/home/walterlucas/Documents/JSMiner/scripts/results-without-gaps.csv')
 
 # Drop unnecessary columns
-df = df.drop(columns=['revision', 'errors'])
+df = df.drop(columns=['revision', 'errors','async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files',
+'arrow_function_declarations_files','let_declarations_files','export_declarations_files','yield_declarations_files',
+'import_statements_files','promise_declarations_files','promise_all_and_then_files','default_parameters_files',
+'rest_statements_files','spread_arguments_files','array_destructuring_files','object_destructuring_files',
+'optional_chain_files','template_string_expressions_files','object_properties_files','null_coalesce_operators_files',
+'regular_expressions_files','hashbang_comments_files','exponentiation_assignments_files','private_fields_files',
+'numeric_separator_files','big_int_files','computed_property_files'])
 
 # Convert the 'date' column to datetime format
 df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
@@ -54,26 +60,30 @@ features = [
     'async_declarations',
     'await_declarations',
     'const_declarations',
-    'class_declarations',
     'arrow_function_declarations',
     'let_declarations',
     'export_declarations',
-    'yield_declarations',
     'import_statements',
-    'promise_declarations',
-    'promise_all_and_then',
+    'class_declarations',
     'default_parameters',
     'rest_statements',
-    'spread_arguments',
     'array_destructuring',
+    'promise_declarations',
+    'promise_all_and_then',
+    'spread_arguments',
     'object_destructuring',
     'yield_declarations',
     'optional_chain',
     'template_string_expressions',
     'null_coalesce_operators',
     'hashbang_comments',
+    'exponentiation_assignments',
     'private_fields',
     'numeric_separator',
+    'object_properties',
+    'big_int',
+    'computed_property',
+    'regular_expressions'
 ]
 
 for feature in features:

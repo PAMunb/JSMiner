@@ -12,7 +12,13 @@ import os
 df = pd.read_csv('/home/walterlucas/Documents/JSMiner/scripts/results-without-gaps.csv')
 
 # Drop unnecessary columns
-df = df.drop(columns=['revision', 'errors'])
+df = df.drop(columns=['revision', 'errors','async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files',
+'arrow_function_declarations_files','let_declarations_files','export_declarations_files','yield_declarations_files',
+'import_statements_files','promise_declarations_files','promise_all_and_then_files','default_parameters_files',
+'rest_statements_files','spread_arguments_files','array_destructuring_files','object_destructuring_files',
+'optional_chain_files','template_string_expressions_files','object_properties_files','null_coalesce_operators_files',
+'regular_expressions_files','hashbang_comments_files','exponentiation_assignments_files','private_fields_files',
+'numeric_separator_files','big_int_files','computed_property_files'])
 
 # Convert the 'date' column to datetime format
 df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
@@ -54,25 +60,30 @@ features = [
     'async_declarations',
     'await_declarations',
     'const_declarations',
-    'class_declarations',
     'arrow_function_declarations',
     'let_declarations',
     'export_declarations',
-    'yield_declarations',
     'import_statements',
-    'promise_declarations',
-    'promise_all_and_then',
+    'class_declarations',
     'default_parameters',
     'rest_statements',
-    'spread_arguments',
     'array_destructuring',
+    'promise_declarations',
+    'promise_all_and_then',
+    'spread_arguments',
     'object_destructuring',
+    'yield_declarations',
     'optional_chain',
     'template_string_expressions',
     'null_coalesce_operators',
     'hashbang_comments',
+    # 'exponentiation_assignments',
     'private_fields',
     'numeric_separator',
+    'object_properties',
+    'big_int',
+    'computed_property',
+    'regular_expressions'
 ]
 
 # Output folder for decomposition plots
@@ -86,9 +97,9 @@ for feature in features:
     total_by_month = subset.groupby(['feature', 'date'])['total'].sum().reset_index()
     subset = subset.merge(total_by_month, on='date', how='left')
     subset = subset.sort_values(by='date')
-    total_by_month['sqrt_total'] = np.sqrt(total_by_month['total'])
+    # total_by_month['sqrt_total'] = np.sqrt(total_by_month['total'])
     total_by_month = total_by_month.set_index('date')
-    decomposition = seasonal_decompose(total_by_month['sqrt_total'], model='additive', period=12)
+    decomposition = seasonal_decompose(total_by_month['total'], model='additive', period=12)
     print(f'Decomposition of {feature}:')
     print(decomposition.trend.head())  # Print the first values of the trend
     print(decomposition.seasonal.head())  # Print the first values of the seasonal component
@@ -109,11 +120,11 @@ for feature in features:
     total_by_month = subset.groupby(['feature', 'date'])['total'].sum().reset_index()
     subset = subset.merge(total_by_month, on='date', how='left')
     subset = subset.sort_values(by='date')
-    total_by_month['sqrt_total'] = np.sqrt(total_by_month['total'])
+    # total_by_month['sqrt_total'] = np.sqrt(total_by_month['total'])
     total_by_month = total_by_month.set_index('date')
     print(f'Autocorrelation Functions of {feature}:')
-    plot_acf(total_by_month['sqrt_total'], lags=50)
-    plot_pacf(total_by_month['sqrt_total'], lags=50)
+    plot_acf(total_by_month['total'], lags=50)
+    plot_pacf(total_by_month['total'], lags=50)
     plt.title(f'Autocorrelation Functions of {feature}')
     pdf_filename = os.path.join(output_folder, f'auto_correlation_{feature}.pdf')
     plt.savefig(pdf_filename, format='pdf')
@@ -124,9 +135,9 @@ for feature in features:
     total_by_month = subset.groupby(['feature', 'date'])['total'].sum().reset_index()
     subset = subset.merge(total_by_month, on='date', how='left')
     subset = subset.sort_values(by='date')
-    total_by_month['sqrt_total'] = np.sqrt(total_by_month['total'])
+    # total_by_month['sqrt_total'] = np.sqrt(total_by_month['total'])
     total_by_month = total_by_month.set_index('date')
-    result = adfuller(total_by_month['sqrt_total'])
+    result = adfuller(total_by_month['total'])
     print(f'ADF Test for {feature}:')
     print('ADF Statistic:', result[0])
     print('p-value:', result[1])
@@ -144,10 +155,10 @@ for feature in features:
     total_by_month = subset.groupby(['feature', 'date'])['total'].sum().reset_index()
     subset = subset.merge(total_by_month, on='date', how='left')
     subset = subset.sort_values(by='date')
-    total_by_month['sqrt_total'] = np.sqrt(total_by_month['total'])
+    # total_by_month['sqrt_total'] = np.sqrt(total_by_month['total'])
     total_by_month = total_by_month.set_index('date')
     # Calculate Kendall coefficient and p-value
-    coeficient_kendall, p_value = kendalltau(total_by_month['sqrt_total'], total_by_month.index)
+    coeficient_kendall, p_value = kendalltau(total_by_month['total'], total_by_month.index)
     # Check if the p-value is less than the significance level (e.g., 0.05)
     significance_level = 0.05
     print('Kendall Coefficient:', coeficient_kendall)
