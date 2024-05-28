@@ -79,4 +79,4 @@ VALOR_COLUNA=$3
 awk -F, -v date="$STRING_DATA" -v col="$NUMERO_COLUNA" -v val="$VALOR_COLUNA" '
 BEGIN {OFS = FS}
 NR == 1 {print; next}
-$2 ~ date && $col == val' filtered-results.csv > feature_first_occurrences.csv
+$2 ~ date && $col >= val' filtered-results.csv > feature_first_occurrences.csv

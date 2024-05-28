@@ -37,7 +37,7 @@ melted_df['total'] = pd.to_numeric(melted_df['total'], errors='coerce')
 melted_df = melted_df.sort_values(by='date')
 
 summary = melted_df.groupby('feature')['total'].agg(['median', 'mean', 'std', 'max', 'min']).reset_index()
-# print(summary)
+print(summary)
 
 tablefmt = 'latex_booktabs'  # Formato LaTeX
 colalign = ("l", "r", "r", "r", "r", "r")
