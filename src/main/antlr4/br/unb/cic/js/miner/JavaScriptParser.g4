@@ -320,7 +320,7 @@ arrayElement
     ;
 
 propertyAssignment
-    : propertyName ':' singleExpression                                             # PropertyExpressionAssignment
+    : property ':' singleExpression                                             # PropertyExpressionAssignment
     | '[' singleExpression ']' ':' singleExpression                                 # ComputedPropertyExpressionAssignment
     | Async? '*'? propertyName '(' formalParameterList?  ')'  functionBody  # FunctionProperty
     | getter '(' ')' functionBody                                           # PropertyGetter
@@ -328,6 +328,12 @@ propertyAssignment
     | Ellipsis? singleExpression                                                    # PropertyShorthand
     ;
 
+property
+    : identifierName
+    | StringLiteral
+    | numericLiteral
+    ;
+    
 propertyName
     : identifierName
     | StringLiteral
