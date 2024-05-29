@@ -157,6 +157,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			totalAsyncDeclarations.incrementAndGet();
 			changeFilesOccurrences(Feature.AsyncDeclarations);
 		}
+		totalObjectProperties.incrementAndGet();
+		changeFilesOccurrences(Feature.ObjectProperties);
 		return super.visitFunctionProperty(ctx);
 	}
 
@@ -277,7 +279,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	}
 
 
-
 	@Override
 	public Void visitMethodDefinition(MethodDefinitionContext ctx) {
 		if (ctx.Async() != null) {
@@ -301,7 +302,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 
 		return super.visitNewExpression(ctx);
 	}
-
 
 
 	@Override
@@ -348,7 +348,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		}
 		return super.visitFormalParameterArg(ctx);
 	}
-
 
 	@Override
 	public Void visitOptionalChainExpression(OptionalChainExpressionContext ctx) {
@@ -399,7 +398,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitForOfStatement(ForOfStatementContext ctx) {
-
 		if (ctx.Await() != null) {
 			totalAwaitDeclarations.incrementAndGet();
 			changeFilesOccurrences(Feature.AwaitDeclarations);

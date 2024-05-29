@@ -346,7 +346,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(4, visitor.getTotalObjectProperties().get());
+            assertEquals(12, visitor.getTotalObjectProperties().get());
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -392,6 +392,20 @@ public class ParserTest {
     		e.printStackTrace();
     		fail();
     	}
+    }
+
+    @Test
+    public void testEnhancedObjectLiteral() {
+        try {
+            String content = loadContent("examples/EnhancedPropertyAssignment.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(2, visitor.getTotalObjectProperties().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Ignore

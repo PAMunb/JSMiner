@@ -13,6 +13,15 @@ public class JSParser {
         return parser.program();
     }
 
+    public void printParseTree(String content) throws Exception {
+        CharStream charStream = CharStreams.fromString(content);
+        ExceptionBasedErrorListener listener = new ExceptionBasedErrorListener();
+        JavaScriptLexer lexer = configureLexer(charStream, listener);
+        JavaScriptParser parser = configureParser(lexer, listener);
+        parser.setBuildParseTree(true);
+        RuleContext tree = parser.program();
+        System.out.println(tree.toStringTree(parser));
+    }
     private JavaScriptParser configureParser(JavaScriptLexer lexer, ExceptionBasedErrorListener listener) {
         JavaScriptParser parser = new JavaScriptParser(new CommonTokenStream(lexer));
         parser.removeErrorListeners();
