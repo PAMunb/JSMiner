@@ -87,7 +87,7 @@ public class Summary {
             	.append(",private-fields-files")
             	.append(",numeric-separator-files")
             	.append(",big-int-files")
-				.append(",enhanced-property-assignment")
+				.append(",enhanced-property-assignment-files")
             	.append(",computed-property-assignment-files")
 				.append(",function-property-declaration-files")
                 .append(",errors")
