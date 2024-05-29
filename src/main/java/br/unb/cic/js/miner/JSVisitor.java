@@ -368,15 +368,19 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitObjectLiteral(ObjectLiteralContext ctx) {
 		if (!ctx.isEmpty()) {
-			if(ctx.getText().contains("[") && ctx.getText().contains("]")){
-				totalComputedProperties.incrementAndGet();
-				changeFilesOccurrences(Feature.ComputedProperties);
-			}else if(!ctx.getText().contains(":") && !ctx.propertyAssignment().isEmpty()){
+			if(!ctx.getText().contains(":") && !ctx.propertyAssignment().isEmpty()){
 				totalObjectProperties.incrementAndGet();
 				changeFilesOccurrences(Feature.ObjectProperties);
 	        }
 		}
 		return super.visitObjectLiteral(ctx);
+	}
+
+	@Override
+	public Void visitComputedPropertyExpressionAssignment(ComputedPropertyExpressionAssignmentContext ctx) {
+		totalComputedProperties.incrementAndGet();
+		changeFilesOccurrences(Feature.ComputedProperties);
+		return super.visitComputedPropertyExpressionAssignment(ctx);
 	}
 
 	@Override

@@ -360,7 +360,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(6, visitor.getTotalComputedProperties().get());
+            assertEquals(5, visitor.getTotalComputedProperties().get());
         } catch (Exception e) {
             e.printStackTrace();
             fail();
