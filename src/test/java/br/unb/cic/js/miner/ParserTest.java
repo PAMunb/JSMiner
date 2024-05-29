@@ -346,7 +346,7 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(3, visitor.getTotalObjectProperties().get());
+            assertEquals(4, visitor.getTotalObjectProperties().get());
         } catch (Exception e) {
             e.printStackTrace();
             fail();

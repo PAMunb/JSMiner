@@ -229,6 +229,9 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		if (ctx.Ellipsis() != null) {
 			totalSpreadArguments.incrementAndGet();
 			changeFilesOccurrences(Feature.SpreadArguments);
+		}else{
+			totalObjectProperties.incrementAndGet();
+			changeFilesOccurrences(Feature.ObjectProperties);
 		}
 		return super.visitPropertyShorthand(ctx);
 	}
@@ -363,17 +366,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			changeFilesOccurrences(Feature.TemplateStringExpressions);
 		}
 		return super.visitTemplateStringLiteral(ctx);
-	}
-
-	@Override
-	public Void visitObjectLiteral(ObjectLiteralContext ctx) {
-		if (!ctx.isEmpty()) {
-			if(!ctx.getText().contains(":") && !ctx.propertyAssignment().isEmpty()){
-				totalObjectProperties.incrementAndGet();
-				changeFilesOccurrences(Feature.ObjectProperties);
-	        }
-		}
-		return super.visitObjectLiteral(ctx);
 	}
 
 	@Override

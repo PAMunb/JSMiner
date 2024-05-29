@@ -10,9 +10,20 @@ obj = { x, y }
 obj = {
   foo (a, b) {
   },
-  *quux (x, y) {
+  *quux (c, d) {
   }
 }
+
+function getPersionES6( name, age, height ) {
+  return {
+    name,
+    height,
+
+    getAge(){ return age; }
+  };
+}
+getPersionES6( 'Zachary', 23, 195 ).getAge()
+// Expected output: 23
 
 class Car {
   constructor(make, model) {
@@ -26,7 +37,8 @@ let uname = 'Anil',
 let user = {  
    uname,  
    udivision  
-};  
+};
+
 console.log(user.uname);  
 console.log(user.udivision);
 
@@ -68,9 +80,12 @@ function createCar(make, model) {
 const myCar = createCar('Toyota', 'Corolla');
 console.log(myCar['ToyotaCorolla']); // Output: 'New Car' 
 
+const firstName = 'John'
+const lastName = 'Doe'
+
 const person = {
-  firstName: 'John',
-  lastName: 'Doe',
+  firstName,
+  lastName,
   getFullName() {
     return `${this.firstName} ${this.lastName}`;
   }
