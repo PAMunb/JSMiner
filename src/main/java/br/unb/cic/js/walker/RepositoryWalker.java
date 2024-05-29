@@ -272,8 +272,8 @@ public final class RepositoryWalker {
 
             /* TODO: @Walter, review this code, please */
             metrics.add(Metric.builder().name("enhanced-property-assignments").value(visitor.getTotalEnhancedPropertyAssignments().get()).build());
-            metrics.add(Metric.builder().name("computed-property-assignments-files").value(visitor.getTotalComputedPropertyAssignments().get()).build());
-            metrics.add(Metric.builder().name("function-property-declaration-files").value(visitor.getTotalFunctionPropertyDeclarations().get()).build());
+            metrics.add(Metric.builder().name("computed-property-assignments").value(visitor.getTotalComputedPropertyAssignments().get()).build());
+            metrics.add(Metric.builder().name("function-property-declaration").value(visitor.getTotalFunctionPropertyDeclarations().get()).build());
 
             metrics.add(Metric.builder().name("async-declarations-files")
                     .value(visitor.occurrences(Feature.AsyncDeclarations)).build());
