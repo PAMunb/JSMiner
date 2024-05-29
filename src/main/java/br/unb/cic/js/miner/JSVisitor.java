@@ -97,7 +97,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	AtomicInteger totalNumericLiteralSeparators = new AtomicInteger(0);
 	AtomicInteger totalBigInt = new AtomicInteger(0);
 	AtomicInteger totalComputedPropertyAssignments = new AtomicInteger(0);
-	AtomicInteger totalEnhancementPropertyAssigments = new AtomicInteger(0);
+	AtomicInteger totalEnhancedPropertyAssignments = new AtomicInteger(0);
 	AtomicInteger totalFunctionPropertyDeclarations = new AtomicInteger(0);
 	AtomicInteger totalStatements = new AtomicInteger(0);
 	
@@ -234,7 +234,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			totalSpreadArguments.incrementAndGet();
 			changeFilesOccurrences(Feature.SpreadArguments);
 		}else{
-			totalEnhancementPropertyAssigments.incrementAndGet();
+			totalEnhancedPropertyAssignments.incrementAndGet();
 			changeFilesOccurrences(Feature.EnhancedPropertyAssignments);
 		}
 		return super.visitPropertyShorthand(ctx);
