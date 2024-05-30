@@ -35,7 +35,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			SpreadArguments,
 			OptionalChain,
 			TemplateStringExpressions,
-			ObjectProperties,
 			RegularExpressions,
 			NullCoalesceOperators,
 			HashBangLines,
@@ -43,7 +42,9 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			PrivateFields,
 			NumericLiteralSeparators,
 			BigInt,
-			ComputedProperties,
+			ComputedPropertyAssignments,
+			EnhancedPropertyAssignments,
+			FunctionPropertyDeclarations,
 			Statements
 	}
 	
@@ -88,7 +89,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	AtomicInteger totalSpreadArguments = new AtomicInteger(0);
 	AtomicInteger totalOptionalChain = new AtomicInteger(0);
 	AtomicInteger totalTemplateStringExpressions = new AtomicInteger(0);
-	AtomicInteger totalObjectProperties = new AtomicInteger(0);
 	AtomicInteger totalRegularExpressions = new AtomicInteger(0);
 	AtomicInteger totalNullCoalesceOperators = new AtomicInteger(0);
 	AtomicInteger totalHashBangLines = new AtomicInteger(0);
@@ -96,7 +96,9 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	AtomicInteger totalPrivateFields = new AtomicInteger(0);
 	AtomicInteger totalNumericLiteralSeparators = new AtomicInteger(0);
 	AtomicInteger totalBigInt = new AtomicInteger(0);
-	AtomicInteger totalComputedProperties = new AtomicInteger(0);
+	AtomicInteger totalComputedPropertyAssignments = new AtomicInteger(0);
+	AtomicInteger totalEnhancedPropertyAssignments = new AtomicInteger(0);
+	AtomicInteger totalFunctionPropertyDeclarations = new AtomicInteger(0);
 	AtomicInteger totalStatements = new AtomicInteger(0);
 	
 	
@@ -157,6 +159,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			totalAsyncDeclarations.incrementAndGet();
 			changeFilesOccurrences(Feature.AsyncDeclarations);
 		}
+		totalFunctionPropertyDeclarations.incrementAndGet();
+		changeFilesOccurrences(Feature.FunctionPropertyDeclarations);
 		return super.visitFunctionProperty(ctx);
 	}
 
@@ -230,8 +234,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			totalSpreadArguments.incrementAndGet();
 			changeFilesOccurrences(Feature.SpreadArguments);
 		}else{
-			totalObjectProperties.incrementAndGet();
-			changeFilesOccurrences(Feature.ObjectProperties);
+			totalEnhancedPropertyAssignments.incrementAndGet();
+			changeFilesOccurrences(Feature.EnhancedPropertyAssignments);
 		}
 		return super.visitPropertyShorthand(ctx);
 	}
@@ -277,7 +281,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	}
 
 
-
 	@Override
 	public Void visitMethodDefinition(MethodDefinitionContext ctx) {
 		if (ctx.Async() != null) {
@@ -301,7 +304,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 
 		return super.visitNewExpression(ctx);
 	}
-
 
 
 	@Override
@@ -349,7 +351,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		return super.visitFormalParameterArg(ctx);
 	}
 
-
 	@Override
 	public Void visitOptionalChainExpression(OptionalChainExpressionContext ctx) {
 		if (!ctx.isEmpty()) {
@@ -370,8 +371,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitComputedPropertyExpressionAssignment(ComputedPropertyExpressionAssignmentContext ctx) {
-		totalComputedProperties.incrementAndGet();
-		changeFilesOccurrences(Feature.ComputedProperties);
+		totalComputedPropertyAssignments.incrementAndGet();
+		changeFilesOccurrences(Feature.ComputedPropertyAssignments);
 		return super.visitComputedPropertyExpressionAssignment(ctx);
 	}
 
@@ -399,7 +400,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitForOfStatement(ForOfStatementContext ctx) {
-
 		if (ctx.Await() != null) {
 			totalAwaitDeclarations.incrementAndGet();
 			changeFilesOccurrences(Feature.AwaitDeclarations);

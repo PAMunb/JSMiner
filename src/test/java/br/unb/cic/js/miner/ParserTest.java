@@ -340,13 +340,13 @@ public class ParserTest {
     }
 
     @Test
-    public void testObjectProperties() {
+    public void testEnhancedPropertyAssignments() {
         try {
             String content = loadContent("examples/EnhancedObjectProperties.js");
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(4, visitor.getTotalObjectProperties().get());
+            assertEquals(8, visitor.getTotalEnhancedPropertyAssignments().get());
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -354,13 +354,27 @@ public class ParserTest {
     }
 
     @Test
-    public void testComputedProperties() {
+    public void testComputedPropertyAssignments() {
         try {
             String content = loadContent("examples/EnhancedObjectProperties.js");
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(5, visitor.getTotalComputedProperties().get());
+            assertEquals(5, visitor.getTotalComputedPropertyAssignments().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testFunctionPropertyDeclarations() {
+        try {
+            String content = loadContent("examples/EnhancedObjectProperties.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(4, visitor.getTotalFunctionPropertyDeclarations().get());
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -381,7 +395,7 @@ public class ParserTest {
         }
     }
     @Test
-    public void testExponentiationAssigments() {
+    public void testExponentiationAssignments() {
     	try {
     		String content = loadContent("examples/ExponentiationAssignment.js");
     		JavaScriptParser.ProgramContext p = parser.parse(content);
@@ -393,6 +407,8 @@ public class ParserTest {
     		fail();
     	}
     }
+
+
 
     @Ignore
     public void testParserReact() throws Exception {
