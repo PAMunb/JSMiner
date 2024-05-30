@@ -132,7 +132,7 @@ public final class RepositoryWalker {
      * @return
      * @throws Exception
      */
-    public List<Summary> traverse(final Interval interval, final String[] hash, final int threads) throws Exception {
+    public List<Summary> traverse(final Interval interval, final String hash, final int threads) throws Exception {
         logger.info("{} -- processing project for a single revision", project);
 
         repository = FileRepositoryBuilder.create(path.toAbsolutePath().resolve(".git").toFile());

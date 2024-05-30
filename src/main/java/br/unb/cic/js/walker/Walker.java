@@ -26,7 +26,7 @@ public final class Walker {
 
     public final String path;
     public final String project;
-    public final String[] hash;
+    public final String hash;
     public final int steps;
     public final int projectThreads;
     public final int filesThreads;
@@ -102,7 +102,7 @@ public final class Walker {
             // check if a hash has been submitted, it will invalidate almost all of the
             // settings and execute the
             // walker for a single commit hash.
-            if (hash.length > 0) {
+            if (hash.length() > 0) {
                 assert (repositories.size() == 1);
             }
 

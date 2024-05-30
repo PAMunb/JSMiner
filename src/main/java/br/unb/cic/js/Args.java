@@ -25,7 +25,7 @@ public class Args {
     public String endDate = "30-06-2023";
 
     @Parameter(names = {"--hash"}, description = "A commit hash to be verified")
-    public String[] hash = {};
+    public String hash = "";
 
     @Parameter(names = {"--merges"}, description = "List commits with/without merge commits")
     public Boolean merges = false;

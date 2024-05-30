@@ -32,7 +32,7 @@ public final class RepositoryWalkerTask implements Runnable {
     public final int steps;
 
     // Option to allow the walker to collect metrics about a single point in a given repository
-    public final String[] hash;
+    public final String hash;
 
     @Override
     public void run() {
@@ -46,7 +46,7 @@ public final class RepositoryWalkerTask implements Runnable {
         try {
             var summaries = Collections.synchronizedList(new ArrayList<Summary>());
 
-            if (hash.length > 0) {
+            if (hash.length() > 0) {
                 summaries = walker.traverse(interval, hash, threads);
             } else {
                 summaries = walker.traverse(interval, steps, threads);
