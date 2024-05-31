@@ -173,20 +173,6 @@ public class ParserTest {
         }
     }
 
-    @Test
-    public void testPromise() {
-        try {
-            String content = loadContent("examples/Promises.js");
-            JavaScriptParser.ProgramContext p = parser.parse(content);
-            JSVisitor visitor = new JSVisitor();
-            p.accept(visitor);
-            assertEquals(2, visitor.getTotalNewPromises().get());
-            assertEquals(3, visitor.getTotalPromiseAllAndThenIdiom().get());
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
 
     @Test
     public void testLet() {
@@ -291,19 +277,6 @@ public class ParserTest {
             fail();
         }
     }
-    @Test
-    public void testHashBangComment() {
-    	try {
-    		String content = loadContent("examples/HashBangComment.js");
-    		JavaScriptParser.ProgramContext p = parser.parse(content);
-    		JSVisitor visitor = new JSVisitor();
-    		p.accept(visitor);
-    		assertEquals(1, visitor.getTotalHashBangLines().get());
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		fail();
-    	}
-    }
 
     @Test
     public void testOptionalChain() {
@@ -381,19 +354,7 @@ public class ParserTest {
         }
     }
 
-    @Test
-    public void testRegularExpressions() {
-        try {
-            String content = loadContent("examples/EnhancedRegularExpression.js");
-            JavaScriptParser.ProgramContext p = parser.parse(content);
-            JSVisitor visitor = new JSVisitor();
-            p.accept(visitor);
-            assertEquals(2, visitor.getTotalRegularExpressions().get());
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
+
     @Test
     public void testExponentiationAssignments() {
     	try {
@@ -407,7 +368,6 @@ public class ParserTest {
     		fail();
     	}
     }
-
 
 
     @Ignore

@@ -240,10 +240,6 @@ public final class RepositoryWalker {
                     .build());
             metrics.add(
                     Metric.builder().name("import-statements").value(visitor.getTotalImportStatements().get()).build());
-            metrics.add(
-                    Metric.builder().name("promise-declarations").value(visitor.getTotalNewPromises().get()).build());
-            metrics.add(Metric.builder().name("promise-all-and-then")
-                    .value(visitor.getTotalPromiseAllAndThenIdiom().get()).build());
             metrics.add(Metric.builder().name("default-parameters").value(visitor.getTotalDefaultParameters().get())
                     .build());
             metrics.add(Metric.builder().name("rest-statements").value(visitor.getTotalRestStatements().get()).build());
@@ -259,10 +255,6 @@ public final class RepositoryWalker {
                     .value(visitor.getTotalTemplateStringExpressions().get()).build());
             metrics.add(Metric.builder().name("null-coalesce-operators")
                     .value(visitor.getTotalNullCoalesceOperators().get()).build());
-            metrics.add(Metric.builder().name("regular-expressions").value(visitor.getTotalRegularExpressions().get())
-                    .build());
-            metrics.add(
-                    Metric.builder().name("hashbang-comments").value(visitor.getTotalHashBangLines().get()).build());
             metrics.add(Metric.builder().name("exponentiation-assignments")
                     .value(visitor.getTotalExponentiationAssignments().get()).build());
             metrics.add(Metric.builder().name("private-fields").value(visitor.getTotalPrivateFields().get()).build());
@@ -293,10 +285,6 @@ public final class RepositoryWalker {
                     .value(visitor.occurrences(Feature.YieldDeclarations)).build());
             metrics.add(Metric.builder().name("import-statements-files")
                     .value(visitor.occurrences(Feature.ImportStatements)).build());
-            metrics.add(Metric.builder().name("promise-declarations-files")
-                    .value(visitor.occurrences(Feature.NewPromises)).build());
-            metrics.add(Metric.builder().name("promise-all-and-then-files")
-                    .value(visitor.occurrences(Feature.PromiseAllAndThenIdiom)).build());
             metrics.add(Metric.builder().name("default-parameters-files")
                     .value(visitor.occurrences(Feature.DefaultParameters)).build());
             metrics.add(Metric.builder().name("rest-statements-files")
@@ -313,10 +301,6 @@ public final class RepositoryWalker {
                     .value(visitor.occurrences(Feature.TemplateStringExpressions)).build());
             metrics.add(Metric.builder().name("null-coalesce-operators-files")
                     .value(visitor.occurrences(Feature.NullCoalesceOperators)).build());
-            metrics.add(Metric.builder().name("regular-expressions-files")
-                    .value(visitor.occurrences(Feature.RegularExpressions)).build());
-            metrics.add(Metric.builder().name("hashbang-comments-files")
-                    .value(visitor.occurrences(Feature.HashBangLines)).build());
             metrics.add(Metric.builder().name("exponentiation-assignments-files")
                     .value(visitor.occurrences(Feature.ExponentiationAssignments)).build());
             metrics.add(Metric.builder().name("private-fields-files").value(visitor.occurrences(Feature.PrivateFields))

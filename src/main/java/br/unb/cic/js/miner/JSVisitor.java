@@ -10,46 +10,42 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Getter
 public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 
-	private static final String THEN = "then";
-	private static final String ALL = "all";
-	private static final String PROMISE = "Promise";
+	// private static final String THEN = "then";
+	// private static final String ALL = "all";
+	// private static final String PROMISE = "Promise";
 	private static final String NUMERIC_SEPARATOR = "_";
 	private String fileName = "example.js";
-	
+
 	public enum Feature {
-			ArrowArrowDeclarations,
-			AsyncDeclarations,
-			AwaitDeclarations,
-			LetDeclarations,
-			ConstDeclaration,
-			ClassDeclarations,
-			YieldDeclarations,
-			ExportDeclarations,
-			ImportStatements,
-			RestStatements,
-			NewPromises,
-			PromiseAllAndThenIdiom,
-			ArrayDestructuring,
-			ObjectDestructuring,
-			DefaultParameters,
-			SpreadArguments,
-			OptionalChain,
-			TemplateStringExpressions,
-			RegularExpressions,
-			NullCoalesceOperators,
-			HashBangLines,
-			ExponentiationAssignments,
-			PrivateFields,
-			NumericLiteralSeparators,
-			BigInt,
-			ComputedPropertyAssignments,
-			EnhancedPropertyAssignments,
-			FunctionPropertyDeclarations,
-			Statements
+		ArrowArrowDeclarations,
+		AsyncDeclarations,
+		AwaitDeclarations,
+		LetDeclarations,
+		ConstDeclaration,
+		ClassDeclarations,
+		YieldDeclarations,
+		ExportDeclarations,
+		ImportStatements,
+		RestStatements,
+		ArrayDestructuring,
+		ObjectDestructuring,
+		DefaultParameters,
+		SpreadArguments,
+		OptionalChain,
+		TemplateStringExpressions,
+		NullCoalesceOperators,
+		ExponentiationAssignments,
+		PrivateFields,
+		NumericLiteralSeparators,
+		BigInt,
+		ComputedPropertyAssignments,
+		EnhancedPropertyAssignments,
+		FunctionPropertyDeclarations,
+		Statements
 	}
-	
+
 	private HashMap<Feature, Set<String>> featureOccurrences;
-	
+
 	public JSVisitor() {
 		super();
 		featureOccurrences = new HashMap<>();
@@ -57,19 +53,18 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			featureOccurrences.put(f, new HashSet<>());
 		}
 	}
-	
+
 	public void setFile(String fileName) {
 		this.fileName = fileName;
 	}
-	
+
 	public int occurrences(Feature f) {
 		int res = 0;
-		if(featureOccurrences.containsKey(f)) {
+		if (featureOccurrences.containsKey(f)) {
 			res = featureOccurrences.get(f).size();
 		}
 		return res;
 	}
-	
 
 	AtomicInteger totalArrowDeclarations = new AtomicInteger(0);
 	AtomicInteger totalAsyncDeclarations = new AtomicInteger(0);
@@ -81,17 +76,13 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	AtomicInteger totalExportDeclarations = new AtomicInteger(0);
 	AtomicInteger totalImportStatements = new AtomicInteger(0);
 	AtomicInteger totalRestStatements = new AtomicInteger(0);
-	AtomicInteger totalNewPromises = new AtomicInteger(0);
-	AtomicInteger totalPromiseAllAndThenIdiom = new AtomicInteger(0);
 	AtomicInteger totalArrayDestructuring = new AtomicInteger(0);
 	AtomicInteger totalObjectDestructuring = new AtomicInteger(0);
 	AtomicInteger totalDefaultParameters = new AtomicInteger(0);
 	AtomicInteger totalSpreadArguments = new AtomicInteger(0);
 	AtomicInteger totalOptionalChain = new AtomicInteger(0);
 	AtomicInteger totalTemplateStringExpressions = new AtomicInteger(0);
-	AtomicInteger totalRegularExpressions = new AtomicInteger(0);
 	AtomicInteger totalNullCoalesceOperators = new AtomicInteger(0);
-	AtomicInteger totalHashBangLines = new AtomicInteger(0);
 	AtomicInteger totalExponentiationAssignments = new AtomicInteger(0);
 	AtomicInteger totalPrivateFields = new AtomicInteger(0);
 	AtomicInteger totalNumericLiteralSeparators = new AtomicInteger(0);
@@ -100,8 +91,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	AtomicInteger totalEnhancedPropertyAssignments = new AtomicInteger(0);
 	AtomicInteger totalFunctionPropertyDeclarations = new AtomicInteger(0);
 	AtomicInteger totalStatements = new AtomicInteger(0);
-	
-	
+
 	private void changeFilesOccurrences(Feature f) {
 		Set<String> files = featureOccurrences.getOrDefault(f, new HashSet<>());
 		files.add(fileName);
@@ -190,7 +180,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		}
 		return super.visitExportDeclaration(ctx);
 	}
-	
 
 	@Override
 	public Void visitImportExpression(ImportExpressionContext ctx) {
@@ -233,7 +222,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		if (ctx.Ellipsis() != null) {
 			totalSpreadArguments.incrementAndGet();
 			changeFilesOccurrences(Feature.SpreadArguments);
-		}else{
+		} else {
 			totalEnhancedPropertyAssignments.incrementAndGet();
 			changeFilesOccurrences(Feature.EnhancedPropertyAssignments);
 		}
@@ -280,7 +269,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		return super.visitIdentifier(ctx);
 	}
 
-
 	@Override
 	public Void visitMethodDefinition(MethodDefinitionContext ctx) {
 		if (ctx.Async() != null) {
@@ -290,31 +278,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		return super.visitMethodDefinition(ctx);
 	}
 
-	@Override
-	public Void visitNewExpression(NewExpressionContext ctx) {
-		if (ctx.singleExpression() != null && ctx.singleExpression().getText().equals(PROMISE)) {
-			totalNewPromises.incrementAndGet();
-			changeFilesOccurrences(Feature.NewPromises);
-		}
-		if (ctx.identifier() != null && ctx.identifier().Identifier() != null
-				&& ctx.identifier().Identifier().getText().equals(PROMISE)) {
-			totalNewPromises.incrementAndGet();
-			changeFilesOccurrences(Feature.NewPromises);
-		}
-
-		return super.visitNewExpression(ctx);
-	}
-
-
-	@Override
-	public Void visitArgumentsExpression(ArgumentsExpressionContext ctx) {
-		if (ctx.singleExpression().getText().contains(PROMISE) && ctx.singleExpression().getText().contains(ALL)
-				&& ctx.singleExpression().getText().contains(THEN)) {
-			totalPromiseAllAndThenIdiom.incrementAndGet();
-			changeFilesOccurrences(Feature.PromiseAllAndThenIdiom);
-		}
-		return super.visitArgumentsExpression(ctx);
-	}
 
 	@Override
 	public Void visitAssignmentExpression(AssignmentExpressionContext ctx) {
@@ -377,19 +340,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	}
 
 	@Override
-	public Void visitLiteral(LiteralContext ctx) {
-		if (ctx.RegularExpressionLiteral() != null) {
-			String regexText = ctx.RegularExpressionLiteral().getText();
-			// Verifica se a expressão regular contém expressões nomeadas ou lookbehind
-			if (regexText.contains("?<") || regexText.contains("(?<=")) {
-				totalRegularExpressions.incrementAndGet();
-				changeFilesOccurrences(Feature.RegularExpressions);
-			}
-		}
-		return super.visitLiteral(ctx);
-	}
-
-	@Override
 	public Void visitCoalesceExpression(CoalesceExpressionContext ctx) {
 		if (ctx.NullCoalesce() != null) {
 			totalNullCoalesceOperators.incrementAndGet();
@@ -408,19 +358,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	}
 
 	@Override
-	public Void visitProgram(ProgramContext ctx) {
-
-		if (ctx.HashBangLine() != null) {
-			totalHashBangLines.incrementAndGet();
-			changeFilesOccurrences(Feature.HashBangLines);
-		}
-
-		return super.visitProgram(ctx);
-	}
-
-	@Override
 	public Void visitAssignmentOperator(AssignmentOperatorContext ctx) {
-		if (ctx.PowerAssign()!=null) {
+		if (ctx.PowerAssign() != null) {
 			totalExponentiationAssignments.incrementAndGet();
 			changeFilesOccurrences(Feature.ExponentiationAssignments);
 		}
@@ -438,7 +377,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitLiteralExpression(LiteralExpressionContext ctx) {
-		
+
 		if (ctx.literal().numericLiteral() != null && ctx.literal().getText().contains(NUMERIC_SEPARATOR)) {
 			totalNumericLiteralSeparators.incrementAndGet();
 			changeFilesOccurrences(Feature.NumericLiteralSeparators);
