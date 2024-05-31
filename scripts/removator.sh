@@ -41,5 +41,3 @@ for dir in "$PROJECT_DIR"/*; do
     echo "$dir não é um repositório Git. Pulando..."
   fi
 done
-
-cd ..
