@@ -25,3 +25,21 @@ for PROJECT_FOLDER in "$PROJECT_DIR"/*; do
   fi
 done
 
+echo "removendo arquivos *.lock ...."
+find dataset/ -type f -name "*.lock" -exec rm -f {} \;
+
+# Script para dar git reset --hard em todos os subdiretórios que são repositórios Git
+
+# Itera sobre todos os subdiretórios
+for dir in "$PROJECT_DIR"/*; do
+  if [ -d "$dir/.git" ]; then
+    echo "Resetando repositório em $dir"
+    cd "$dir"
+    git reset --hard
+    cd ../..
+  else
+    echo "$dir não é um repositório Git. Pulando..."
+  fi
+done
+
+cd ..
