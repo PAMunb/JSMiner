@@ -32,7 +32,7 @@ if [ "$MEMORY_USAGE" -ge "$MEMORY_LIMIT_GB" ] || [ "$CSV_FILE_COUNT" -ge "$CSV_F
         ./removator.sh
 
         # Reinicie a execução do programa Java
-        nohup java -jar java -jar -Xmx26g target/JSMiner-1.0-SNAPSHOT.jar -d dataset/ -s 30 -ft 1 >/dev/null 2>&1 &
+        nohup java -jar -Xmx26g target/JSMiner-1.0-SNAPSHOT.jar -d dataset/ -s 30 -ft 1 >/dev/null 2>&1 &
     fi
 else
     echo "Uso de memória dentro dos limites e menos de $CSV_FILE_LIMIT arquivos CSV. Não é necessário fazer nada."
