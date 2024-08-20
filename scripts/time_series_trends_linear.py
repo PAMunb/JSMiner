@@ -8,13 +8,7 @@ from statsmodels.nonparametric.smoothers_lowess import lowess
 
 df = pd.read_csv('~/Documents/JSMiner/scripts/results-without-gaps.csv')
 
-df = df.drop(columns=['revision', 'errors','async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files',
-'arrow_function_declarations_files','let_declarations_files','export_declarations_files','yield_declarations_files',
-'import_statements_files','promise_declarations_files','promise_all_and_then_files','default_parameters_files',
-'rest_statements_files','spread_arguments_files','array_destructuring_files','object_destructuring_files',
-'optional_chain_files','template_string_expressions_files','object_properties_files','null_coalesce_operators_files',
-'regular_expressions_files','hashbang_comments_files','exponentiation_assignments_files','private_fields_files',
-'numeric_separator_files','big_int_files','computed_property_files'])
+df = df.drop(columns=['revision', 'errors','async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files','arrow_function_declarations_files','let_declarations_files','export_declarations_files','yield_declarations_files','import_statements_files','default_parameters_files', 'rest_statements_files','spread_arguments_files','array_destructuring_files','object_destructuring_files','optional_chain_files','template_string_expressions_files','null_coalesce_operators_files','exponentiation_assignments_files','private_fields_files', 'numeric_separator_files','big_int_files','enhanced_property_assignment_files','computed_property_assignment_files','function_property_declaration_files'])
 
 
 df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
@@ -59,22 +53,19 @@ features = [
     'default_parameters',
     'rest_statements',
     'array_destructuring',
-    'promise_declarations',
-    'promise_all_and_then',
     'spread_arguments',
     'object_destructuring',
     'yield_declarations',
     'optional_chain',
     'template_string_expressions',
     'null_coalesce_operators',
-    'hashbang_comments',
     # 'exponentiation_assignments',
     'private_fields',
     'numeric_separator',
-    'object_properties',
     'big_int',
-    'computed_property',
-    'regular_expressions'
+    'enhanced_property_assignment',
+    'computed_property_assignment',
+    'function_property_declaration'
 ]
 
 # Função para ajustar modelos de regressão e gerar gráficos de tendência

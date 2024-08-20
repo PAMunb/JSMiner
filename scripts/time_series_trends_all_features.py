@@ -7,7 +7,13 @@ from statsmodels.nonparametric.smoothers_lowess import lowess
 
 df = pd.read_csv('~/Documents/JSMiner/scripts/results-without-gaps.csv')
 
-df = df.drop(columns=['revision', 'errors'])
+df = df.drop(columns=['revision', 'errors','async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files',
+'arrow_function_declarations_files','let_declarations_files','export_declarations_files','yield_declarations_files',
+'import_statements_files','default_parameters_files',
+'rest_statements_files','spread_arguments_files','array_destructuring_files','object_destructuring_files',
+'optional_chain_files','template_string_expressions_files','null_coalesce_operators_files','exponentiation_assignments_files','private_fields_files',
+'numeric_separator_files','big_int_files','enhanced_property_assignment_files','computed_property_assignment_files','function_property_declaration_files'])
+
 df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
 
 df['year_month'] = df['date'].dt.strftime('%Y-%m')
@@ -40,19 +46,17 @@ melted_df = melted_df.sort_values(by='year_month')
 
 # Lista de recursos (features)
 features = [
-    # 'async_declarations',
+    'async_declarations',
     # 'await_declarations',
-    'files',
-    'statements',
-    # 'const_declarations',
+    # 'files',
+    # 'statements',
+    'const_declarations',
     # 'class_declarations',
     'arrow_function_declarations',
     # 'let_declarations',
     # 'export_declarations',
     # 'yield_declarations',
     # 'import_statements',
-    # 'promise_declarations',
-    'promise_all_and_then',
     # 'default_parameters',
     # 'rest_statements',
     # 'spread_arguments',
@@ -62,9 +66,11 @@ features = [
     # 'optional_chain',
     # 'template_string_expressions',
     # 'null_coalesce_operators',
-    # 'hashbang_comments',
     # 'private_fields',
     # 'numeric_separator',
+    # 'enhanced_property_assignment',
+    # 'computed_property_assignment',
+    # 'function_property_declaration'
 ]
 
 plt.figure(figsize=(16, 8))

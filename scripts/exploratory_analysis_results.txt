@@ -7,11 +7,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -186.225947
-2012-02-01   -139.321780
-2012-03-01   -112.813447
-2012-04-01   -144.621780
-2012-05-01    -74.296780
+2012-01-01    -74.711806
+2012-02-01   -125.886806
+2012-03-01    -32.824306
+2012-04-01    -95.107639
+2012-05-01   -136.707639
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -29,11 +29,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -152.510922
-2012-02-01    -34.640088
-2012-03-01   -129.310922
-2012-04-01   -231.215088
-2012-05-01   -222.473422
+2012-01-01    -59.929861
+2012-02-01    -66.621528
+2012-03-01     -8.179861
+2012-04-01   -137.038194
+2012-05-01   -314.117361
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -51,11 +51,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01      63.465309
-2012-02-01     -21.405524
-2012-03-01    -166.701357
-2012-04-01    1042.711143
-2012-05-01     652.202809
+2012-01-01    279.244539
+2012-02-01    252.719539
+2012-03-01   -126.938794
+2012-04-01    911.748706
+2012-05-01    424.990372
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -73,11 +73,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -185.959785
-2012-02-01    -40.684785
-2012-03-01   -549.872285
-2012-04-01    418.765215
-2012-05-01    519.298548
+2012-01-01     20.983649
+2012-02-01     25.587816
+2012-03-01   -442.928851
+2012-04-01    628.996149
+2012-05-01    337.491982
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -95,11 +95,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -263.458870
-2012-02-01    -79.150537
-2012-03-01   -472.000537
-2012-04-01   -672.721370
-2012-05-01    -97.875537
+2012-01-01     -7.818245
+2012-02-01    178.919255
+2012-03-01   -133.659912
+2012-04-01   -365.555745
+2012-05-01   -440.559912
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -117,11 +117,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -49.334122
-2012-02-01     4.453378
-2012-03-01   -54.850789
-2012-04-01     4.324211
-2012-05-01    15.495044
+2012-01-01   -55.053030
+2012-02-01    -4.528030
+2012-03-01   -46.744697
+2012-04-01    22.430303
+2012-05-01    -0.632197
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -139,11 +139,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01    376.164710
-2012-02-01    359.810543
-2012-03-01    105.185543
-2012-04-01   -122.035290
-2012-05-01    -60.472790
+2012-01-01    397.999874
+2012-02-01    354.058207
+2012-03-01    125.833207
+2012-04-01    -68.258460
+2012-05-01    -98.620960
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -161,11 +161,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01    14.635795
-2012-02-01    52.514962
-2012-03-01    19.064962
-2012-04-01   -14.701705
-2012-05-01   -17.747538
+2012-01-01    31.229924
+2012-02-01    39.742424
+2012-03-01     8.838258
+2012-04-01   -24.395076
+2012-05-01   -33.690909
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -183,11 +183,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01    -6.853567
-2012-02-01    -5.220234
-2012-03-01   -10.857734
-2012-04-01    20.808933
-2012-05-01    20.954766
+2012-01-01     2.611995
+2012-02-01     4.707828
+2012-03-01    -5.813005
+2012-04-01    18.845328
+2012-05-01    11.253662
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -205,11 +205,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01     4.024558
-2012-02-01     4.678725
-2012-03-01    13.287058
-2012-04-01    -3.146275
-2012-05-01    -4.229609
+2012-01-01     4.535732
+2012-02-01     3.398232
+2012-03-01    13.319066
+2012-04-01    -1.997601
+2012-05-01    -3.260101
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -227,55 +227,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01    -6.856976
-2012-02-01   -11.773643
-2012-03-01    -8.140309
-2012-04-01   -14.823643
-2012-05-01   -11.544476
-Name: seasonal, dtype: float64
-date
-2012-01-01   NaN
-2012-02-01   NaN
-2012-03-01   NaN
-2012-04-01   NaN
-2012-05-01   NaN
-Name: resid, dtype: float64
-Decomposition of promise_declarations:
-date
-2012-01-01   NaN
-2012-02-01   NaN
-2012-03-01   NaN
-2012-04-01   NaN
-2012-05-01   NaN
-Name: trend, dtype: float64
-date
-2012-01-01    -2.025063
-2012-02-01    12.945770
-2012-03-01    -4.108396
-2012-04-01     2.749937
-2012-05-01     3.754104
-Name: seasonal, dtype: float64
-date
-2012-01-01   NaN
-2012-02-01   NaN
-2012-03-01   NaN
-2012-04-01   NaN
-2012-05-01   NaN
-Name: resid, dtype: float64
-Decomposition of promise_all_and_then:
-date
-2012-01-01   NaN
-2012-02-01   NaN
-2012-03-01   NaN
-2012-04-01   NaN
-2012-05-01   NaN
-Name: trend, dtype: float64
-date
-2012-01-01     7.997159
-2012-02-01     7.947159
-2012-03-01     3.913826
-2012-04-01    26.917992
-2012-05-01    19.022159
+2012-01-01    -1.473295
+2012-02-01    -9.931629
+2012-03-01    -4.656629
+2012-04-01    -9.010795
+2012-05-01   -14.264962
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -293,11 +249,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -32.664678
-2012-02-01    19.439489
-2012-03-01    22.597822
-2012-04-01   -11.185511
-2012-05-01   -37.964678
+2012-01-01   -31.447159
+2012-02-01    21.361174
+2012-03-01    18.173674
+2012-04-01   -13.326326
+2012-05-01   -38.380492
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -315,11 +271,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -20.608681
-2012-02-01    -4.792014
-2012-03-01     8.941319
-2012-04-01    21.178819
-2012-05-01    25.012153
+2012-01-01    -8.975063
+2012-02-01     1.295770
+2012-03-01     6.354104
+2012-04-01    16.449937
+2012-05-01    17.687437
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -337,11 +293,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01     0.528630
-2012-02-01     9.699463
-2012-03-01    21.374463
-2012-04-01    -4.754703
-2012-05-01    16.107797
+2012-01-01     0.559312
+2012-02-01     9.821812
+2012-03-01    21.588479
+2012-04-01    -4.449021
+2012-05-01    16.505145
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -359,11 +315,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01    -3.286395
-2012-02-01    -5.411395
-2012-03-01   -11.807229
-2012-04-01     0.946938
-2012-05-01    -0.636395
+2012-01-01    -4.795013
+2012-02-01    -9.378346
+2012-03-01   -15.765846
+2012-04-01     2.275821
+2012-05-01     1.246654
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -381,11 +337,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -35.139899
-2012-02-01    72.380934
-2012-03-01   -37.144066
-2012-04-01   -28.277399
-2012-05-01    83.576768
+2012-01-01    -2.385006
+2012-02-01    65.344160
+2012-03-01    -0.343340
+2012-04-01    32.077494
+2012-05-01    32.327494
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -403,33 +359,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -4.007008
-2012-02-01   -0.923674
-2012-03-01    0.359659
-2012-04-01   -1.048674
-2012-05-01    0.051326
-Name: seasonal, dtype: float64
-date
-2012-01-01   NaN
-2012-02-01   NaN
-2012-03-01   NaN
-2012-04-01   NaN
-2012-05-01   NaN
-Name: resid, dtype: float64
-Decomposition of hashbang_comments:
-date
-2012-01-01   NaN
-2012-02-01   NaN
-2012-03-01   NaN
-2012-04-01   NaN
-2012-05-01   NaN
-Name: trend, dtype: float64
-date
-2012-01-01   -0.871843
-2012-02-01   -0.167677
-2012-03-01   -0.434343
-2012-04-01   -0.288510
-2012-05-01    0.057323
+2012-01-01   -0.831061
+2012-02-01   -1.547727
+2012-03-01   -0.668561
+2012-04-01   -0.581061
+2012-05-01    0.160606
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -447,11 +381,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -0.115341
-2012-02-01   -1.061174
-2012-03-01   -1.161174
-2012-04-01   -1.386174
-2012-05-01    0.563826
+2012-01-01    1.326641
+2012-02-01    0.980808
+2012-03-01    0.818308
+2012-04-01    0.543308
+2012-05-01    3.168308
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -469,33 +403,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01    4.522506
-2012-02-01    4.055840
-2012-03-01    3.189173
-2012-04-01    1.418340
-2012-05-01    0.697506
-Name: seasonal, dtype: float64
-date
-2012-01-01   NaN
-2012-02-01   NaN
-2012-03-01   NaN
-2012-04-01   NaN
-2012-05-01   NaN
-Name: resid, dtype: float64
-Decomposition of object_properties:
-date
-2012-01-01   NaN
-2012-02-01   NaN
-2012-03-01   NaN
-2012-04-01   NaN
-2012-05-01   NaN
-Name: trend, dtype: float64
-date
-2012-01-01   -53.701673
-2012-02-01    -8.243340
-2012-03-01     6.569160
-2012-04-01     5.898327
-2012-05-01    32.123327
+2012-01-01    3.733491
+2012-02-01    3.475158
+2012-03-01    2.816824
+2012-04-01    1.154324
+2012-05-01    0.641824
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -513,11 +425,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -0.794697
-2012-02-01   -0.911364
-2012-03-01   -0.328030
-2012-04-01    0.446970
-2012-05-01    0.809470
+2012-01-01   -0.583775
+2012-02-01   -0.650442
+2012-03-01   -0.617109
+2012-04-01    0.207891
+2012-05-01    0.628725
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -526,7 +438,7 @@ date
 2012-04-01   NaN
 2012-05-01   NaN
 Name: resid, dtype: float64
-Decomposition of computed_property:
+Decomposition of enhanced_property_assignment:
 date
 2012-01-01   NaN
 2012-02-01   NaN
@@ -535,11 +447,11 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01   -1156.465688
-2012-02-01    2046.884312
-2012-03-01    4164.925979
-2012-04-01     907.250979
-2012-05-01     642.734312
+2012-01-01    -67.120297
+2012-02-01     35.329703
+2012-03-01     57.600537
+2012-04-01    110.267203
+2012-05-01     52.550537
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -548,7 +460,7 @@ date
 2012-04-01   NaN
 2012-05-01   NaN
 Name: resid, dtype: float64
-Decomposition of regular_expressions:
+Decomposition of computed_property_assignment:
 date
 2012-01-01   NaN
 2012-02-01   NaN
@@ -557,11 +469,33 @@ date
 2012-05-01   NaN
 Name: trend, dtype: float64
 date
-2012-01-01    0.774369
-2012-02-01    0.386869
-2012-03-01    0.695202
-2012-04-01    0.403535
-2012-05-01    0.011869
+2012-01-01     5.032102
+2012-02-01     2.352936
+2012-03-01   -29.488731
+2012-04-01    38.682102
+2012-05-01    43.448769
+Name: seasonal, dtype: float64
+date
+2012-01-01   NaN
+2012-02-01   NaN
+2012-03-01   NaN
+2012-04-01   NaN
+2012-05-01   NaN
+Name: resid, dtype: float64
+Decomposition of function_property_declaration:
+date
+2012-01-01   NaN
+2012-02-01   NaN
+2012-03-01   NaN
+2012-04-01   NaN
+2012-05-01   NaN
+Name: trend, dtype: float64
+date
+2012-01-01    82.649937
+2012-02-01    82.195770
+2012-03-01    11.912437
+2012-04-01    37.270770
+2012-05-01     8.358270
 Name: seasonal, dtype: float64
 date
 2012-01-01   NaN
@@ -581,304 +515,268 @@ Autocorrelation Functions of class_declarations:
 Autocorrelation Functions of default_parameters:
 Autocorrelation Functions of rest_statements:
 Autocorrelation Functions of array_destructuring:
-Autocorrelation Functions of promise_declarations:
-Autocorrelation Functions of promise_all_and_then:
 Autocorrelation Functions of spread_arguments:
 Autocorrelation Functions of object_destructuring:
 Autocorrelation Functions of yield_declarations:
 Autocorrelation Functions of optional_chain:
 Autocorrelation Functions of template_string_expressions:
 Autocorrelation Functions of null_coalesce_operators:
-Autocorrelation Functions of hashbang_comments:
 Autocorrelation Functions of private_fields:
 Autocorrelation Functions of numeric_separator:
-Autocorrelation Functions of object_properties:
 Autocorrelation Functions of big_int:
-Autocorrelation Functions of computed_property:
-Autocorrelation Functions of regular_expressions:
+Autocorrelation Functions of enhanced_property_assignment:
+Autocorrelation Functions of computed_property_assignment:
+Autocorrelation Functions of function_property_declaration:
 ADF Test for async_declarations:
-ADF Statistic: 1.2962843248945768
-p-value: 0.996588050388102
-Critical Values: {'1%': -3.4793722137854926, '5%': -2.8830370378332995, '10%': -2.578233635380623}
+ADF Statistic: 0.8543685528763445
+p-value: 0.9924649713552804
+Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for await_declarations:
-ADF Statistic: 3.440836684607623
+ADF Statistic: 2.7817986177081924
 p-value: 1.0
-Critical Values: {'1%': -3.479742586699182, '5%': -2.88319822181578, '10%': -2.578319684499314}
-Test Results:
-The series is non-stationary (fails to reject the null hypothesis)
-----------------------------------------
-ADF Test for const_declarations:
-ADF Statistic: 0.36188291332653877
-p-value: 0.9800121540489559
-Critical Values: {'1%': -3.4816817173418295, '5%': -2.8840418343195267, '10%': -2.578770059171598}
-Test Results:
-The series is non-stationary (fails to reject the null hypothesis)
-----------------------------------------
-ADF Test for arrow_function_declarations:
-ADF Statistic: 0.25244087400056364
-p-value: 0.9750541432847093
-Critical Values: {'1%': -3.4825006939887997, '5%': -2.884397984161377, '10%': -2.578960197753906}
-Test Results:
-The series is non-stationary (fails to reject the null hypothesis)
-----------------------------------------
-ADF Test for let_declarations:
-ADF Statistic: 0.24738762174869133
-p-value: 0.9747976364225923
 Critical Values: {'1%': -3.4793722137854926, '5%': -2.8830370378332995, '10%': -2.578233635380623}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
+ADF Test for const_declarations:
+ADF Statistic: 2.5758307480475344
+p-value: 0.9990702922260781
+Critical Values: {'1%': -3.4793722137854926, '5%': -2.8830370378332995, '10%': -2.578233635380623}
+Test Results:
+The series is non-stationary (fails to reject the null hypothesis)
+----------------------------------------
+ADF Test for arrow_function_declarations:
+ADF Statistic: 0.5864377555762029
+p-value: 0.9872765287298438
+Critical Values: {'1%': -3.4816817173418295, '5%': -2.8840418343195267, '10%': -2.578770059171598}
+Test Results:
+The series is non-stationary (fails to reject the null hypothesis)
+----------------------------------------
+ADF Test for let_declarations:
+ADF Statistic: 0.49170096584699446
+p-value: 0.984618659105412
+Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
+Test Results:
+The series is non-stationary (fails to reject the null hypothesis)
+----------------------------------------
 ADF Test for export_declarations:
-ADF Statistic: 2.283980268150966
-p-value: 0.9989447811660215
-Critical Values: {'1%': -3.479742586699182, '5%': -2.88319822181578, '10%': -2.578319684499314}
+ADF Statistic: 1.1634171038877377
+p-value: 0.9957231228083511
+Critical Values: {'1%': -3.480500383888377, '5%': -2.8835279559405045, '10%': -2.578495716547007}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for import_statements:
-ADF Statistic: 2.0574058725795195
-p-value: 0.9987430559327534
+ADF Statistic: 1.8865642913389036
+p-value: 0.9985060938871918
 Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for class_declarations:
-ADF Statistic: 0.3522499244954764
-p-value: 0.979618706497181
-Critical Values: {'1%': -3.481281802271349, '5%': -2.883867891664528, '10%': -2.5786771965503177}
+ADF Statistic: 0.3550419504975377
+p-value: 0.9797335428118068
+Critical Values: {'1%': -3.482087964046026, '5%': -2.8842185101614626, '10%': -2.578864381347275}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for default_parameters:
-ADF Statistic: -0.3187790586825341
-p-value: 0.922802224066913
+ADF Statistic: -0.035339107295288594
+p-value: 0.9555101514317172
 Critical Values: {'1%': -3.4816817173418295, '5%': -2.8840418343195267, '10%': -2.578770059171598}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for rest_statements:
-ADF Statistic: 0.5854176443453913
-p-value: 0.9872506293950529
-Critical Values: {'1%': -3.4808880719210005, '5%': -2.8836966192225284, '10%': -2.5785857598714417}
+ADF Statistic: 0.594632934709201
+p-value: 0.9874825904434879
+Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for array_destructuring:
-ADF Statistic: 0.21930489118253962
-p-value: 0.9733237971302726
+ADF Statistic: -0.11923441528338637
+p-value: 0.9474886905076613
 Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
-Test Results:
-The series is non-stationary (fails to reject the null hypothesis)
-----------------------------------------
-ADF Test for promise_declarations:
-ADF Statistic: 1.2438488082896801
-p-value: 0.9962752670591155
-Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
-Test Results:
-The series is non-stationary (fails to reject the null hypothesis)
-----------------------------------------
-ADF Test for promise_all_and_then:
-ADF Statistic: -1.4954302959210108
-p-value: 0.5357706827960251
-Critical Values: {'1%': -3.479742586699182, '5%': -2.88319822181578, '10%': -2.578319684499314}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for spread_arguments:
-ADF Statistic: 4.496246975995366
+ADF Statistic: 3.979269336185855
 p-value: 1.0
 Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for object_destructuring:
-ADF Statistic: -0.2592008236377685
-p-value: 0.9310872441721023
-Critical Values: {'1%': -3.4846672514209773, '5%': -2.8853397507076006, '10%': -2.5794629869786503}
+ADF Statistic: 4.475536263899484
+p-value: 1.0
+Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for yield_declarations:
-ADF Statistic: -2.0769103352034457
-p-value: 0.25389984314134495
+ADF Statistic: -2.077068149065659
+p-value: 0.2538350167168737
 Critical Values: {'1%': -3.4808880719210005, '5%': -2.8836966192225284, '10%': -2.5785857598714417}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for optional_chain:
-ADF Statistic: 2.013607196762707
-p-value: 0.9986903735090022
-Critical Values: {'1%': -3.481281802271349, '5%': -2.883867891664528, '10%': -2.5786771965503177}
+ADF Statistic: 0.7493389408707597
+p-value: 0.9907727900596376
+Critical Values: {'1%': -3.4846672514209773, '5%': -2.8853397507076006, '10%': -2.5794629869786503}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for template_string_expressions:
-ADF Statistic: -1.0561299737602483
-p-value: 0.7322461225810593
+ADF Statistic: -0.6974939802424494
+p-value: 0.8473975860545708
 Critical Values: {'1%': -3.482920063655088, '5%': -2.884580323367261, '10%': -2.5790575441750883}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for null_coalesce_operators:
-ADF Statistic: 3.9385901227805022
-p-value: 1.0
+ADF Statistic: -4.138568517724824
+p-value: 0.0008357205091093079
 Critical Values: {'1%': -3.484219653271961, '5%': -2.885145235641637, '10%': -2.579359138917794}
 Test Results:
-The series is non-stationary (fails to reject the null hypothesis)
-----------------------------------------
-ADF Test for hashbang_comments:
-ADF Statistic: -2.817248673247371
-p-value: 0.05585184564193341
-Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
-Test Results:
-The series is non-stationary (fails to reject the null hypothesis)
+The series is stationary (rejects the null hypothesis)
 ----------------------------------------
 ADF Test for private_fields:
-ADF Statistic: 0.8928061853771484
-p-value: 0.9929957232913031
-Critical Values: {'1%': -3.484219653271961, '5%': -2.885145235641637, '10%': -2.579359138917794}
+ADF Statistic: 2.38993565645523
+p-value: 0.9990054943642795
+Critical Values: {'1%': -3.4846672514209773, '5%': -2.8853397507076006, '10%': -2.5794629869786503}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
 ADF Test for numeric_separator:
-ADF Statistic: 0.4268452055514833
-p-value: 0.9824715680969389
+ADF Statistic: -0.0036915405550872393
+p-value: 0.9582257314288447
 Critical Values: {'1%': -3.4837793736959997, '5%': -2.88495387648, '10%': -2.579256976}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
-ADF Test for object_properties:
-ADF Statistic: -0.24598399439347504
-p-value: 0.932813850583882
-Critical Values: {'1%': -3.4833462346078936, '5%': -2.8847655969877666, '10%': -2.5791564575459813}
-Test Results:
-The series is non-stationary (fails to reject the null hypothesis)
-----------------------------------------
 ADF Test for big_int:
-ADF Statistic: 3.457552080257432
+ADF Statistic: 3.216534418004207
 p-value: 1.0
-Critical Values: {'1%': -3.484219653271961, '5%': -2.885145235641637, '10%': -2.579359138917794}
+Critical Values: {'1%': -3.4846672514209773, '5%': -2.8853397507076006, '10%': -2.5794629869786503}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
-ADF Test for computed_property:
-ADF Statistic: -2.956915746662898
-p-value: 0.039118551152683985
-Critical Values: {'1%': -3.479742586699182, '5%': -2.88319822181578, '10%': -2.578319684499314}
-Test Results:
-The series is stationary (rejects the null hypothesis)
-----------------------------------------
-ADF Test for regular_expressions:
-ADF Statistic: 1.632880932426615
-p-value: 0.9979529444549495
+ADF Test for enhanced_property_assignment:
+ADF Statistic: 4.880215346336464
+p-value: 1.0
 Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
 Test Results:
 The series is non-stationary (fails to reject the null hypothesis)
 ----------------------------------------
-Kendall Coefficient: 0.9610705596107056
+ADF Test for computed_property_assignment:
+ADF Statistic: -1.0100514271357897
+p-value: 0.7495806428069787
+Critical Values: {'1%': -3.4837793736959997, '5%': -2.88495387648, '10%': -2.579256976}
+Test Results:
+The series is non-stationary (fails to reject the null hypothesis)
+----------------------------------------
+ADF Test for function_property_declaration:
+ADF Statistic: -0.1861824549745171
+p-value: 0.9401487153079615
+Critical Values: {'1%': -3.479007355368944, '5%': -2.8828782366015093, '10%': -2.5781488587564603}
+Test Results:
+The series is non-stationary (fails to reject the null hypothesis)
+----------------------------------------
+Kendall Coefficient: 0.9292213340197574
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for async_declarations.
-Kendall Coefficient: 0.9426225469984839
+Kendall Coefficient: 0.9372394392205705
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for await_declarations.
-Kendall Coefficient: 0.967356258385908
+Kendall Coefficient: 0.9722780875834695
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for const_declarations.
-Kendall Coefficient: 0.9753762134604371
+Kendall Coefficient: 0.9656349563020431
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for arrow_function_declarations.
-Kendall Coefficient: 0.9165829158551607
+Kendall Coefficient: 0.9451910062447636
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for let_declarations.
-Kendall Coefficient: 0.9586436360760325
+Kendall Coefficient: 0.9603991926946907
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for export_declarations.
-Kendall Coefficient: 0.9566686348800421
+Kendall Coefficient: 0.9577658577667034
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for import_statements.
-Kendall Coefficient: 0.9556283764439908
+Kendall Coefficient: 0.9569335825124324
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for class_declarations.
-Kendall Coefficient: 0.9535964107973903
+Kendall Coefficient: 0.9552412397615927
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for default_parameters.
-Kendall Coefficient: 0.9242780329223569
+Kendall Coefficient: 0.9337127419184497
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for rest_statements.
-Kendall Coefficient: 0.9519939146411249
+Kendall Coefficient: 0.9440842770254009
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for array_destructuring.
-Kendall Coefficient: 0.9588017521249106
-p-value: 0.0000000000000000000000000
-Significance Level: 0.05
-Increasing Trend in the Time Series for promise_declarations.
-Kendall Coefficient: 0.7220558774114255
-p-value: 0.0000000000000000000000000
-Significance Level: 0.05
-Increasing Trend in the Time Series for promise_all_and_then.
-Kendall Coefficient: 0.9451607377420088
+Kendall Coefficient: 0.9389197548762545
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for spread_arguments.
-Kendall Coefficient: 0.9731699998358174
+Kendall Coefficient: 0.9726349717321207
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for object_destructuring.
-Kendall Coefficient: 0.6982967008654735
+Kendall Coefficient: 0.6967604510627229
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for yield_declarations.
-Kendall Coefficient: 0.7441857218775366
+Kendall Coefficient: 0.697731737784497
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for optional_chain.
-Kendall Coefficient: 0.953658402824129
+Kendall Coefficient: 0.9509945315225992
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for template_string_expressions.
-Kendall Coefficient: 0.711321117895617
+Kendall Coefficient: 0.7112467549361081
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for null_coalesce_operators.
-Kendall Coefficient: 0.8885941163748879
-p-value: 0.0000000000000000000000000
-Significance Level: 0.05
-Increasing Trend in the Time Series for hashbang_comments.
-Kendall Coefficient: 0.776700057330683
+Kendall Coefficient: 0.7743675783711848
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
 Increasing Trend in the Time Series for private_fields.
-Kendall Coefficient: 0.615541023990669
-p-value: 0.0000000000000000000312446
+Kendall Coefficient: 0.373623204184661
+p-value: 0.0000000524862033310552036
 Significance Level: 0.05
 Increasing Trend in the Time Series for numeric_separator.
-Kendall Coefficient: 0.9759994634486137
-p-value: 0.0000000000000000000000000
-Significance Level: 0.05
-Increasing Trend in the Time Series for object_properties.
-Kendall Coefficient: 0.6770448554329639
-p-value: 0.0000000000000000000000030
+Kendall Coefficient: 0.6686461376473243
+p-value: 0.0000000000000000000000137
 Significance Level: 0.05
 Increasing Trend in the Time Series for big_int.
-Kendall Coefficient: 0.8891357241087485
+Kendall Coefficient: 0.9630841801846801
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
-Increasing Trend in the Time Series for computed_property.
-Kendall Coefficient: 0.89019090187391
+Increasing Trend in the Time Series for enhanced_property_assignment.
+Kendall Coefficient: 0.9276623856547702
 p-value: 0.0000000000000000000000000
 Significance Level: 0.05
-Increasing Trend in the Time Series for regular_expressions.
+Increasing Trend in the Time Series for computed_property_assignment.
+Kendall Coefficient: 0.897716549238892
+p-value: 0.0000000000000000000000000
+Significance Level: 0.05
+Increasing Trend in the Time Series for function_property_declaration.

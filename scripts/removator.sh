@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Diretório das pastas dos projetos
-PROJECT_DIR="dataset"
+PROJECT_DIR="/home/walterlucas/JSMiner/dataset"
 
 # Diretório dos arquivos .csv
-CSV_DIR="../jsminer-out"
+CSV_DIR="/home/walterlucas/jsminer-out"
 
 # Loop através de cada pasta no diretório do projeto
 for PROJECT_FOLDER in "$PROJECT_DIR"/*; do
@@ -26,7 +26,7 @@ for PROJECT_FOLDER in "$PROJECT_DIR"/*; do
 done
 
 echo "removendo arquivos *.lock ...."
-find dataset/ -type f -name "*.lock" -exec rm -f {} \;
+find /home/walterlucas/JSMiner/dataset/ -type f -name "*.lock" -exec rm -f {} \;
 
 # Script para dar git reset --hard em todos os subdiretórios que são repositórios Git
 

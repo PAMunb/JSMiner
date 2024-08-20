@@ -1,0 +1,53 @@
+sudo apt-get update
+
+sudo apt install vim htop curl git unzip zip python3.11-venv -y
+
+curl -s "https://get.sdkman.io" | bash
+
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+sdk install java 11.0.23-ms
+
+sdk install maven 3.6.3
+
+git clone https://github.com/PAMunb/JSMiner.git
+
+cd JSMiner/ && git checkout develop && mvn clean install
+
+mkdir dataset
+
+python3 -m venv jsminer && source jsminer/bin/activate && pip install GitPython
+
+python3 scripts/clone_projects.py dataset/ scripts/remaining_projects.csv
+
+sudo chmod -R 777 dataset/
+
+chmod +x monitor_memory.sh
+chmod +x removator.sh
+
+sudo visudo
+
+walterlucas ALL=(ALL) NOPASSWD: /sbin/shutdown
+
+crontab -e
+
+0,20,40 * * * * /home/walterlucas/JSMiner/monitor_memory.sh >> /home/walterlucas/JSMiner/monitor_memory.log 2>&1
+
+
+# Apagar linhas do csv com o vim
+Digite :2,151d e pressione Enter.
+
+find dataset/ -type f -name "*.lock" -exec rm -f {} \;
+
+ps ax | grep '[j]ava -jar -Xmx26g /home/walterlucas/JSMiner/target/JSMiner-1.0-SNAPSHOT.jar' | awk '{print $1}'
+
+nohup java -jar -Xmx26g /home/walterlucas/JSMiner/target/JSMiner-1.0-SNAPSHOT.jar -d /home/walterlucas/JSMiner/dataset/ -s 30 -ft 1 >/home/walterlucas/JSMiner/nohup.out 2>&1 &
+
+scp -r walterlucas@34.105.55.44:/home/walterlucas/jsminer-out .
+ssh 34.105.55.44
+
+
+scp -r walterlucas@34.105.55.44:/home/walterlucas/JSMiner/monitor_memory.sh .
+
+
+enhanced-property-assignment-files,computed-property-assignment-files,function-property-declaration-files

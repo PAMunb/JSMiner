@@ -9,11 +9,11 @@ df = pd.read_csv('~/Documents/JSMiner/scripts/results-without-gaps.csv')
 
 df = df.drop(columns=['revision', 'errors','async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files',
 'arrow_function_declarations_files','let_declarations_files','export_declarations_files','yield_declarations_files',
-'import_statements_files','promise_declarations_files','promise_all_and_then_files','default_parameters_files',
+'import_statements_files','default_parameters_files',
 'rest_statements_files','spread_arguments_files','array_destructuring_files','object_destructuring_files',
-'optional_chain_files','template_string_expressions_files','object_properties_files','null_coalesce_operators_files',
-'regular_expressions_files','hashbang_comments_files','exponentiation_assignments_files','private_fields_files',
-'numeric_separator_files','big_int_files','computed_property_files'])
+'optional_chain_files','template_string_expressions_files','null_coalesce_operators_files','exponentiation_assignments_files','private_fields_files',
+'numeric_separator_files','big_int_files','enhanced_property_assignment_files','computed_property_assignment_files','function_property_declaration_files'])
+
 df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
 
 last_revision_idx = df.groupby(['project'])['date'].idxmax()
@@ -76,7 +76,7 @@ total_by_feature = melted_df.groupby('feature')['total'].sum().reset_index()
 
 total_projects = df['project'].nunique()
 
-print(total_projects)
+print("Total de projetos: ",total_projects)
 
 # Verificar se a feature tem pelo menos uma ocorrência
 df_feature_counts = melted_df.groupby('feature')['total'].sum().reset_index()
@@ -153,22 +153,19 @@ features_mapping = {
     'default_parameters': 'Default Parameters',
     'rest_statements': 'Rest Statements',
     'array_destructuring': 'Array Destructuring',
-    'promise_declarations': 'Promise Declarations',
-    'promise_all_and_then': 'Promise All() and Then()',
     'spread_arguments': 'Spread Arguments',
     'object_destructuring': 'Object Destructuring',
     'yield_declarations': 'Yield Declarations',
     'optional_chain': 'Optional Chain',
     'template_string_expressions': 'Template String Expressions',
     'null_coalesce_operators': 'Null Coalesce Operators',
-    'hashbang_comments': 'Hashbang Comments',
     'exponentiation_assignments': 'Exponentiation Assignments',
     'private_fields': 'Private Fields',
     'numeric_separator': 'Numeric Separator',
-    'object_properties': 'Enhanced Object Properties',
     'big_int':'BigInt',
-    'computed_property':'Computed Property',
-    'regular_expressions':'Regular Expression',
+    'enhanced_property_assignment' : 'Enhanced Property Assignment',
+    'computed_property_assignment' : 'Computed Property Assignment',
+    'function_property_declaration' : 'Function Property Declarations'
 }
 
 # Renomear as colunas

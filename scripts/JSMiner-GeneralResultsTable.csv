@@ -1,0 +1,19 @@
+Feature,Start Trend,Feature language introduction (JS Version),First Adoption
+Const Declarations,2017-03,ES6 (2015),2012-01
+Async Declarations,2016-06,ES8 (2017),2012-01
+Let Declarations,2016-06,ES6 (2015),2012-01
+Object Destructuring,2017-05,ES6 (2015),2012-01
+Array Destructuring,2018-04,ES6 (2015),2012-01
+Enhanced Property Assignment,2018-06,ES6 (2015),2012-01
+Arrow Function Declarations,2016-04,ES6 (2015),2014-04
+Default Parameters,2017-01,ES6 (2015),2014-05
+Class Declarations,2020-01,ES6 (2015),2014-09
+Import Statements,2017-02,ES6 (2015),2015-02
+Export Declarations,2017-02,ES6 (2015),2015-02
+Rest Statements,2015-09,ES6 (2015),2015-02
+Template String Expressions,2017-05,ES6 (2015),2015-05
+Function Property Declarations,2015-02,ES6 (2015),2015-05
+Spread Arguments,2018-01,ES6 (2015),2015-07
+Computed Property Assignment,2018-05,ES6 (2015),2015-07
+Await Declarations,2020-01,ES8 (2017),2015-09
+Optional Chain,2020-06,ES11 (2020),2018-02

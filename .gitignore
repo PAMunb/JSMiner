@@ -13,3 +13,4 @@ js-miner-out/*
 .zip
 /.apt_generated/
 /.apt_generated_tests/
+scripts/jsminer_backup.sql

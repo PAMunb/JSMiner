@@ -1,3 +1,4 @@
+import sys
 import pandas as pd
 from tabulate import tabulate
 import seaborn as sns
@@ -9,36 +10,75 @@ df = pd.read_csv('~/Documents/JSMiner/scripts/results-without-gaps.csv')
 
 # Filtrar as colunas de interesse
 features_columns = [
-    'async_declarations_files', 'await_declarations_files', 'const_declarations_files',
-    'class_declarations_files', 'arrow_function_declarations_files', 'let_declarations_files',
-    'export_declarations_files', 'yield_declarations_files', 'import_statements_files',
-    'promise_declarations_files', 'promise_all_and_then_files', 'default_parameters_files',
-    'rest_statements_files', 'spread_arguments_files', 'array_destructuring_files',
-    'object_destructuring_files', 'optional_chain_files', 'template_string_expressions_files',
-    'object_properties_files', 'null_coalesce_operators_files', 'regular_expressions_files',
-    'hashbang_comments_files', 'exponentiation_assignments_files', 'private_fields_files',
-    'numeric_separator_files', 'big_int_files', 'computed_property_files'
+'async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files','arrow_function_declarations_files','let_declarations_files','export_declarations_files','yield_declarations_files','import_statements_files','default_parameters_files','rest_statements_files','spread_arguments_files','array_destructuring_files','object_destructuring_files','optional_chain_files','template_string_expressions_files','null_coalesce_operators_files','exponentiation_assignments_files','private_fields_files', 'numeric_separator_files','big_int_files','enhanced_property_assignment_files','computed_property_assignment_files','function_property_declaration_files'
 ]
+
+df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
+
+last_revision_idx = df.groupby(['project'])['date'].idxmax()
+
+df_last_revision = df.loc[last_revision_idx]
+
+# print(df)
+# sys.exit()
 
 # Calcular a porcentagem de arquivos com ocorrências para cada revisão
 for feature in features_columns:
-    df[feature + '_percentage'] = (df[feature] / df['files']) * 100
+    df_last_revision[feature + '_percentage'] = (df_last_revision[feature] / df['files']) * 100
     
-# print(df)
 
+# Defina as variáveis de interesse
+id_vars = ["project", "date", "revision", "statements", "files"]
+value_name = "total"
+var_name = "feature"
+
+df_summary = df_last_revision.drop(columns=['async_declarations','await_declarations','const_declarations','class_declarations',
+'arrow_function_declarations','let_declarations','export_declarations','yield_declarations',
+'import_statements','default_parameters',
+'rest_statements','spread_arguments','array_destructuring','object_destructuring',
+'optional_chain','template_string_expressions','null_coalesce_operators','exponentiation_assignments','private_fields',
+'numeric_separator','big_int','enhanced_property_assignment','computed_property_assignment','function_property_declaration'])
+
+df_summary = df_summary.drop(columns=['errors','async_declarations_files','await_declarations_files','const_declarations_files','class_declarations_files',
+'arrow_function_declarations_files','let_declarations_files','export_declarations_files','yield_declarations_files',
+'import_statements_files','default_parameters_files',
+'rest_statements_files','spread_arguments_files','array_destructuring_files','object_destructuring_files',
+'optional_chain_files','template_string_expressions_files','null_coalesce_operators_files','exponentiation_assignments_files','private_fields_files',
+'numeric_separator_files','big_int_files','enhanced_property_assignment_files','computed_property_assignment_files','function_property_declaration_files'])
+
+df_summary.to_csv('last_revision_files_occurrences_percentage.csv', index=False)
+
+# Derreta o DataFrame para o formato apropriado
+melted_df = pd.melt(df_summary, id_vars=id_vars, value_name=value_name, var_name=var_name)
+
+# Converta a coluna 'date' para datetime
+melted_df['date'] = melted_df['date'].apply(lambda x: pd.to_datetime(x, format='%Y-%m-%d', errors='coerce'))
+
+# Converta a coluna 'value' para um tipo numérico
+melted_df['total'] = pd.to_numeric(melted_df['total'], errors='coerce')
+
+melted_df = melted_df.sort_values(by='date')
+
+summary = melted_df.groupby('feature')['total'].agg(['median', 'mean', 'std', 'max', 'min']).reset_index()
+# print(summary)
+# exit()
 # Calcular a média das porcentagens para cada feature por projeto
-project_feature_means = df.groupby('project')[[feature + '_percentage' for feature in features_columns]].mean().reset_index()
+# project_feature_means = df.groupby('project')[[feature + '_percentage' for feature in features_columns]].mean().reset_index()
 
 # print(project_feature_means)
+# sys.exit()
 
 # Remover a coluna 'project' ao calcular a média geral
-mean_feature_usage = project_feature_means[[feature + '_percentage' for feature in features_columns]].mean().reset_index()
+mean_feature_usage = df_last_revision[[feature + '_percentage' for feature in features_columns]].mean().reset_index()
 mean_feature_usage.columns = ['feature', 'mean_percentage']
+
+# print(mean_feature_usage)
+# sys.exit()
 
 # Mapear os nomes das features para uma forma mais legível
 features_mapping = {
     'async_declarations_files_percentage': 'Async Declarations',
-    'await_declarations_files_percentage': 'Await Declarations',
+    'await_declarations_files_percentage': 'Await Operators',
     'const_declarations_files_percentage': 'Const Declarations',
     'arrow_function_declarations_files_percentage': 'Arrow Function Declarations',
     'let_declarations_files_percentage': 'Let Declarations',
@@ -48,27 +88,25 @@ features_mapping = {
     'default_parameters_files_percentage': 'Default Parameters',
     'rest_statements_files_percentage': 'Rest Statements',
     'array_destructuring_files_percentage': 'Array Destructuring',
-    'promise_declarations_files_percentage': 'Promise Declarations',
-    'promise_all_and_then_files_percentage': 'Promise All() and Then()',
     'spread_arguments_files_percentage': 'Spread Arguments',
     'object_destructuring_files_percentage': 'Object Destructuring',
-    'yield_declarations_files_percentage': 'Yield Declarations',
+    'yield_declarations_files_percentage': 'Yield Operators',
     'optional_chain_files_percentage': 'Optional Chain',
     'template_string_expressions_files_percentage': 'Template String Expressions',
     'null_coalesce_operators_files_percentage': 'Null Coalesce Operators',
-    'hashbang_comments_files_percentage': 'Hashbang Comments',
-    'exponentiation_assignments_files_percentage': 'Exponentiation Assignments',
+    # 'exponentiation_assignments_files_percentage': 'Exponentiation Assignments',
     'private_fields_files_percentage': 'Private Fields',
     'numeric_separator_files_percentage': 'Numeric Separator',
-    'object_properties_files_percentage': 'Enhanced Object Properties',
-    'big_int_files_percentage': 'BigInt',
-    'computed_property_files_percentage': 'Computed Property',
-    'regular_expressions_files_percentage': 'Regular Expression'
+    'big_int_files_percentage':'BigInt',
+    'enhanced_property_assignment_files_percentage' : 'Enhanced Property Assignment',
+    'computed_property_assignment_files_percentage' : 'Computed Property Assignment',
+    'function_property_declaration_files_percentage' : 'Function Property Declarations'
 }
 
 mean_feature_usage['feature'] = mean_feature_usage['feature'].map(features_mapping)
 
-print(mean_feature_usage)
+# print(mean_feature_usage)
+# sys.exit()
 
 # Criar a tabela LaTeX
 tablefmt = 'latex_booktabs'  # Formato LaTeX
