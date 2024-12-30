@@ -43,7 +43,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		FunctionPropertyDeclarations,
 		Statements,
 		ForOfStatements,
-		ForInStatements
+		ForInStatements,
+		ForAwaitOf
 	}
 
 	private HashMap<Feature, Set<String>> featureOccurrences;
@@ -94,7 +95,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	AtomicInteger totalFunctionPropertyDeclarations = new AtomicInteger(0);
 	AtomicInteger totalStatements = new AtomicInteger(0);
 	AtomicInteger totalForOfStatements = new AtomicInteger(0);
-	AtomicInteger totalForInStatements = new AtomicInteger(0);	
+	AtomicInteger totalForInStatements = new AtomicInteger(0);
+	AtomicInteger totalForAwaitOf = new AtomicInteger(0);	
 
 	private void changeFilesOccurrences(Feature f) {
 		Set<String> files = featureOccurrences.getOrDefault(f, new HashSet<>());
@@ -357,6 +359,9 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		if (ctx.Await() != null) {
 			totalAwaitDeclarations.incrementAndGet();
 			changeFilesOccurrences(Feature.AwaitDeclarations);
+
+			totalForAwaitOf.incrementAndGet();
+			changeFilesOccurrences(Feature.ForAwaitOf);
 		}
 		totalForOfStatements.incrementAndGet();
 		changeFilesOccurrences(Feature.ForOfStatements);

@@ -422,6 +422,7 @@ public class ParserTest {
             p.accept(visitor);
             assertEquals(5, visitor.getTotalForOfStatements().get());
             assertEquals(1, visitor.getTotalAwaitDeclarations().get());
+            assertEquals(1, visitor.getTotalForAwaitOf().get());            
         } catch (Exception e) {
             e.printStackTrace();
             fail();

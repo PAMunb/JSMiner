@@ -316,7 +316,9 @@ public final class RepositoryWalker {
             metrics.add(Metric.builder().name("statements").value(visitor.getTotalStatements().get()).build());
 
             metrics.add(Metric.builder().name("forof_statements_files").value(visitor.getTotalForOfStatements()).build());
-            metrics.add(Metric.builder().name("forin_statements_files").value(visitor.getTotalForInStatements()).build());            
+            metrics.add(Metric.builder().name("forin_statements_files").value(visitor.getTotalForInStatements()).build());
+            
+            metrics.add(Metric.builder().name("forawaitof_files").value(visitor.getTotalForOfStatements()).build());
 
             summary.date(current).revision(head.toString()).metrics(metrics).errors(errors);
         } catch (Exception ex) {
