@@ -41,7 +41,9 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		ComputedPropertyAssignments,
 		EnhancedPropertyAssignments,
 		FunctionPropertyDeclarations,
-		Statements
+		Statements,
+		ForOfStatements,
+		ForInStatements
 	}
 
 	private HashMap<Feature, Set<String>> featureOccurrences;
@@ -91,6 +93,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	AtomicInteger totalEnhancedPropertyAssignments = new AtomicInteger(0);
 	AtomicInteger totalFunctionPropertyDeclarations = new AtomicInteger(0);
 	AtomicInteger totalStatements = new AtomicInteger(0);
+	AtomicInteger totalForOfStatements = new AtomicInteger(0);
+	AtomicInteger totalForInStatements = new AtomicInteger(0);	
 
 	private void changeFilesOccurrences(Feature f) {
 		Set<String> files = featureOccurrences.getOrDefault(f, new HashSet<>());
@@ -354,8 +358,20 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			totalAwaitDeclarations.incrementAndGet();
 			changeFilesOccurrences(Feature.AwaitDeclarations);
 		}
+		totalForOfStatements.incrementAndGet();
+		changeFilesOccurrences(Feature.ForOfStatements);
+
 		return super.visitForOfStatement(ctx);
 	}
+
+	@Override
+	public Void visitForInStatement(ForInStatementContext ctx) {
+		totalForInStatements.incrementAndGet();
+		changeFilesOccurrences(Feature.ForInStatements);
+
+		return super.visitForInStatement(ctx);
+	}
+
 
 	@Override
 	public Void visitAssignmentOperator(AssignmentOperatorContext ctx) {
