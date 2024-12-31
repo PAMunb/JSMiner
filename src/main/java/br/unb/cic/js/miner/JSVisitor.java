@@ -385,15 +385,6 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	}
 
 	@Override
-	public Void visitForInStatement(ForInStatementContext ctx) {
-		totalForInStatements.incrementAndGet();
-		changeFilesOccurrences(Feature.ForInStatements);
-
-		return super.visitForInStatement(ctx);
-	}
-
-
-	@Override
 	public Void visitAssignmentOperator(AssignmentOperatorContext ctx) {
 		if (ctx.PowerAssign() != null) {
 			totalExponentiationAssignments.incrementAndGet();

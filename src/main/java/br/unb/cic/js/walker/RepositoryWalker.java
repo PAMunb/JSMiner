@@ -313,7 +313,6 @@ public final class RepositoryWalker {
             metrics.add(Metric.builder().name("function-property-declaration-files").value(visitor.occurrences(Feature.FunctionPropertyDeclarations)).build());
 
             metrics.add(Metric.builder().name("forof-statements-files").value(visitor.getTotalForOfStatements()).build());
-            metrics.add(Metric.builder().name("forin-statements-files").value(visitor.getTotalForInStatements()).build());
             
             metrics.add(Metric.builder().name("forawaitof-files").value(visitor.getTotalForAwaitOf()).build());
 
