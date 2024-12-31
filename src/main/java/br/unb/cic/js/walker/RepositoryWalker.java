@@ -312,15 +312,16 @@ public final class RepositoryWalker {
             metrics.add(Metric.builder().name("computed-property-assignments-files").value(visitor.occurrences(Feature.ComputedPropertyAssignments)).build());
             metrics.add(Metric.builder().name("function-property-declaration-files").value(visitor.occurrences(Feature.FunctionPropertyDeclarations)).build());
 
-            metrics.add(Metric.builder().name("errors").value(errors.size()).build());
-            metrics.add(Metric.builder().name("statements").value(visitor.getTotalStatements().get()).build());
-
-            metrics.add(Metric.builder().name("forof_statements-files").value(visitor.getTotalForOfStatements()).build());
-            metrics.add(Metric.builder().name("forin_statements-files").value(visitor.getTotalForInStatements()).build());
+            metrics.add(Metric.builder().name("forof-statements-files").value(visitor.getTotalForOfStatements()).build());
+            metrics.add(Metric.builder().name("forin-statements-files").value(visitor.getTotalForInStatements()).build());
             
             metrics.add(Metric.builder().name("forawaitof-files").value(visitor.getTotalForAwaitOf()).build());
 
             metrics.add(Metric.builder().name("staticblockclasses-files").value(visitor.getTotalStaticBlockInClasses()).build());            
+
+            metrics.add(Metric.builder().name("errors").value(errors.size()).build());
+            metrics.add(Metric.builder().name("statements").value(visitor.getTotalStatements().get()).build());
+
 
             summary.date(current).revision(head.toString()).metrics(metrics).errors(errors);
         } catch (Exception ex) {

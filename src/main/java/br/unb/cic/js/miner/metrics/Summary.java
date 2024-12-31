@@ -82,6 +82,10 @@ public class Summary {
 				.append(",enhanced-property-assignment-files")
             	.append(",computed-property-assignment-files")
 				.append(",function-property-declaration-files")
+                .append(",forof-statements-files")
+                .append(",forin-statements-files")
+                .append(",forawaitof-files")
+                .append(",staticblockclasses-files")    
                 .append(",errors")
                 .append(",statements\n");
 
