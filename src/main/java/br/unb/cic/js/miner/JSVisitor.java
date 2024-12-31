@@ -44,7 +44,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		Statements,
 		ForOfStatements,
 		ForInStatements,
-		ForAwaitOf
+		ForAwaitOf,
+		StaticBlockInClasses
 	}
 
 	private HashMap<Feature, Set<String>> featureOccurrences;
@@ -96,7 +97,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	AtomicInteger totalStatements = new AtomicInteger(0);
 	AtomicInteger totalForOfStatements = new AtomicInteger(0);
 	AtomicInteger totalForInStatements = new AtomicInteger(0);
-	AtomicInteger totalForAwaitOf = new AtomicInteger(0);	
+	AtomicInteger totalForAwaitOf = new AtomicInteger(0);
+	AtomicInteger totalStaticBlockInClasses = new AtomicInteger(0);	
 
 	private void changeFilesOccurrences(Feature f) {
 		Set<String> files = featureOccurrences.getOrDefault(f, new HashSet<>());
@@ -177,6 +179,19 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		}
 		return super.visitClassDeclaration(ctx);
 	}
+
+	@Override
+	public Void visitClassElement(ClassElementContext ctx) {
+		boolean isStaticBlock = ctx.block() != null &&
+			(ctx.Static() != null ||  (ctx.identifier() != null && ctx.identifier().getText().equals("static")));
+
+		if (isStaticBlock) {
+			totalStaticBlockInClasses.incrementAndGet();
+			changeFilesOccurrences(Feature.StaticBlockInClasses);
+		}
+		return super.visitClassElement(ctx);
+	}
+
 
 	@Override
 	public Void visitExportDeclaration(ExportDeclarationContext ctx) {
