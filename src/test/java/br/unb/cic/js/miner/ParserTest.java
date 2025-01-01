@@ -412,4 +412,35 @@ public class ParserTest {
         assertEquals(1341, totalStatements);
         assertEquals(1, errors);
     }
+
+    @Test
+    public void testForOf() {
+        try {
+            String content = loadContent("examples/Forof-forin.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(5, visitor.getTotalForOfStatements().get());
+            assertEquals(1, visitor.getTotalAwaitDeclarations().get());
+            assertEquals(1, visitor.getTotalForAwaitOf().get());            
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testStaticInClasses() {
+        try {
+            String content = loadContent("examples/staticinclasses.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(1, visitor.getTotalStaticBlockInClasses().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
 }
