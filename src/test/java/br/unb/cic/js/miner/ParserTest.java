@@ -45,7 +45,7 @@ public class ParserTest {
             fail();
         }
     }
-    
+
     @Test
     public void testStatements() {
         try {
@@ -59,7 +59,7 @@ public class ParserTest {
             fail();
         }
     }
-    
+
     @Test
     public void testArrowFunctions() {
         try {
@@ -89,6 +89,48 @@ public class ParserTest {
     }
 
     @Test
+    public void testPrivateField() {
+        try {
+            String content = loadContent("examples/PrivateField.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(4, visitor.getTotalPrivateFields().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testPrivateMethods() {
+        try {
+            String content = loadContent("examples/PrivateField.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(2, visitor.getTotalPrivateMethods().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testAssignmentOperators() {
+        try {
+            String content = loadContent("examples/assignmentOperatorsTest.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(13, visitor.getTotalAssignmentOperators().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
     public void testAwait() {
         try {
             String content = loadContent("examples/AsyncAwait.js");
@@ -101,7 +143,7 @@ public class ParserTest {
             fail();
         }
     }
-    
+
     @Test
     public void testNullCoalesce() {
         try {
@@ -152,7 +194,21 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(6, visitor.getTotalSpreadArguments().get());
+            assertEquals(7, visitor.getTotalSpreadArguments().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testSpreadInObjects() {
+        try {
+            String content = loadContent("examples/SpreadAndRest.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(5, visitor.getTotalSpreadInObjects().get());
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -166,13 +222,26 @@ public class ParserTest {
             JavaScriptParser.ProgramContext p = parser.parse(content);
             JSVisitor visitor = new JSVisitor();
             p.accept(visitor);
-            assertEquals(2, visitor.getTotalRestStatements().get());
+            assertEquals(5, visitor.getTotalRestStatements().get());
         } catch (Exception e) {
             e.printStackTrace();
             fail();
         }
     }
 
+    @Test
+    public void testRestInObjects() {
+        try {
+            String content = loadContent("examples/SpreadAndRest.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(2, visitor.getTotalRestInObjects().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
 
     @Test
     public void testLet() {
@@ -216,39 +285,37 @@ public class ParserTest {
             fail();
         }
     }
-    
+
     @Test
     public void testNumericLieralSeparator() {
-    	try {
-    		String content = loadContent("examples/NumericSeparator.js");
-    		JavaScriptParser.ProgramContext p = parser.parse(content);
-    		JSVisitor visitor = new JSVisitor();
-    		p.accept(visitor);
-    		assertEquals(10, visitor.getTotalNumericLiteralSeparators().get());
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		fail();
-    	}
+        try {
+            String content = loadContent("examples/NumericSeparator.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(10, visitor.getTotalNumericLiteralSeparators().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
     }
+
     @Test
     public void testBigInt() {
-    	try {
-    		String content = loadContent("examples/BigIntLiteral.js");
-    		JavaScriptParser.ProgramContext p = parser.parse(content);
-    		JSVisitor visitor = new JSVisitor();
-    		p.accept(visitor);
+        try {
+            String content = loadContent("examples/BigIntLiteral.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
             content = loadContent("examples/mysql.js");
-    		p = parser.parse(content);
-    		p.accept(visitor);
-    		assertEquals(8, visitor.getTotalBigInt().get());
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		fail();
-    	}
+            p = parser.parse(content);
+            p.accept(visitor);
+            assertEquals(8, visitor.getTotalBigInt().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
     }
-    
-
-
 
     @Test
     public void testClass() {
@@ -354,21 +421,19 @@ public class ParserTest {
         }
     }
 
-
     @Test
     public void testExponentiationAssignments() {
-    	try {
-    		String content = loadContent("examples/ExponentiationAssignment.js");
-    		JavaScriptParser.ProgramContext p = parser.parse(content);
-    		JSVisitor visitor = new JSVisitor();
-    		p.accept(visitor);
-    		assertEquals(6, visitor.getTotalExponentiationAssignments().get());
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		fail();
-    	}
+        try {
+            String content = loadContent("examples/ExponentiationAssignment.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(6, visitor.getTotalExponentiationAssignments().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
     }
-
 
     @Ignore
     public void testParserReact() throws Exception {
@@ -422,7 +487,7 @@ public class ParserTest {
             p.accept(visitor);
             assertEquals(5, visitor.getTotalForOfStatements().get());
             assertEquals(1, visitor.getTotalAwaitDeclarations().get());
-            assertEquals(1, visitor.getTotalForAwaitOf().get());            
+            assertEquals(1, visitor.getTotalForAwaitOf().get());
         } catch (Exception e) {
             e.printStackTrace();
             fail();
