@@ -62,3 +62,13 @@ console.log("**= : ", exponentiationAssignment);
 let nullishCoalescingAssignment = null;
 nullishCoalescingAssignment ??= "Default Value"; // nullishCoalescingAssignment = "Default Value"
 console.log("??= : ", nullishCoalescingAssignment);
+
+
+let a = true;
+a &&= false; // a será false, pois `true && false` é false.
+
+let b = null;
+b ||= "default"; // a será "default", pois null é falsy.
+
+let c = undefined;
+c ??= "default"; // a será "default", pois undefined é nullish.

@@ -297,8 +297,12 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitAssignmentOperatorExpression(AssignmentOperatorExpressionContext ctx) {
-		totalAssignmentOperators.incrementAndGet();
-		changeFilesOccurrences(Feature.AssignmentOperators);
+		if (ctx.assignmentOperator().OrAssign() != null || ctx.assignmentOperator().AndAssign() != null
+				|| ctx.assignmentOperator().NullishCoalescingAssign() != null) {
+			totalAssignmentOperators.incrementAndGet();
+			changeFilesOccurrences(Feature.AssignmentOperators);
+		}
+
 		return super.visitAssignmentOperatorExpression(ctx);
 	}
 

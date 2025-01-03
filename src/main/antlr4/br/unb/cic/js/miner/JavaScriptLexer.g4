@@ -98,6 +98,8 @@ BitOrAssign:                    '|=';
 PowerAssign:                    '**=';
 NullishCoalescingAssign:        '??=';
 ARROW:                          '=>';
+OrAssign:                       '||=';
+AndAssign:                      '&&=';
 
 /// Null Literals
 
