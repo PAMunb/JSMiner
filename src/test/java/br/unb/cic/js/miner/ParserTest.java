@@ -117,6 +117,20 @@ public class ParserTest {
     }
 
     @Test
+    public void testOptionalCatchBinding() {
+        try {
+            String content = loadContent("examples/OptionalCatchBinding.js");
+            JavaScriptParser.ProgramContext p = parser.parse(content);
+            JSVisitor visitor = new JSVisitor();
+            p.accept(visitor);
+            assertEquals(2, visitor.getTotalOptionalCatchBindingDeclarations().get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
     public void testAssignmentOperators() {
         try {
             String content = loadContent("examples/assignmentOperatorsTest.js");

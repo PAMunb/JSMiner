@@ -72,7 +72,6 @@ public final class RepositoryWalker {
             val current = new Date((long) commitTimeInSeconds * 1000);
             if (current.compareTo(interval.begin) >= 0 && current.compareTo(interval.end) <= 0) {
                 // only add commits that fit the interval
-
                 if (previous == null || Interval.diff(current, previous, Interval.Unit.Days) >= steps) {
                     commitDates.add(current);
                     previous = current;
@@ -107,7 +106,8 @@ public final class RepositoryWalker {
 
             profiler.stop();
 
-            logger.info("{} -- collected commit {} of {} (took {}ms to collect)", project, traversed, totalGroups,
+            logger.info("{} -- collected commit {} of {} (took {}ms to collect)", project, traversed,
+                    totalGroups,
                     profiler.last());
 
             summaries.add(summary);
@@ -116,7 +116,8 @@ public final class RepositoryWalker {
         val average = profiler.average();
         val total = (double) profiler.total() / 1000.0;
 
-        logger.info("{} -- finished, took {}ms in average to collect each commit and {}s in total", project, average,
+        logger.info("{} -- finished, took {}ms in average to collect each commit and {}s in total", project,
+                average,
                 total);
 
         return summaries;
@@ -222,50 +223,85 @@ public final class RepositoryWalker {
 
             pool.shutdown();
 
-            metrics.add(Metric.builder().name("async-declarations").value(visitor.getTotalAsyncDeclarations().get())
+            metrics.add(Metric.builder().name("async-declarations")
+                    .value(visitor.getTotalAsyncDeclarations().get())
                     .build());
-            metrics.add(Metric.builder().name("await-declarations").value(visitor.getTotalAwaitDeclarations().get())
+            metrics.add(Metric.builder().name("await-declarations")
+                    .value(visitor.getTotalAwaitDeclarations().get())
                     .build());
-            metrics.add(Metric.builder().name("const-declarations").value(visitor.getTotalConstDeclaration().get())
+            metrics.add(Metric.builder().name("const-declarations")
+                    .value(visitor.getTotalConstDeclaration().get())
                     .build());
-            metrics.add(Metric.builder().name("class-declarations").value(visitor.getTotalClassDeclarations().get())
+            metrics.add(Metric.builder().name("class-declarations")
+                    .value(visitor.getTotalClassDeclarations().get())
                     .build());
             metrics.add(Metric.builder().name("arrow-function-declarations")
                     .value(visitor.getTotalArrowDeclarations().get()).build());
             metrics.add(
-                    Metric.builder().name("let-declarations").value(visitor.getTotalLetDeclarations().get()).build());
-            metrics.add(Metric.builder().name("export-declarations").value(visitor.getTotalExportDeclarations().get())
+                    Metric.builder().name("let-declarations")
+                            .value(visitor.getTotalLetDeclarations().get()).build());
+            metrics.add(Metric.builder().name("export-declarations")
+                    .value(visitor.getTotalExportDeclarations().get())
                     .build());
-            metrics.add(Metric.builder().name("yield-declarations").value(visitor.getTotalYieldDeclarations().get())
+            metrics.add(Metric.builder().name("yield-declarations")
+                    .value(visitor.getTotalYieldDeclarations().get())
                     .build());
             metrics.add(
-                    Metric.builder().name("import-statements").value(visitor.getTotalImportStatements().get()).build());
-            metrics.add(Metric.builder().name("default-parameters").value(visitor.getTotalDefaultParameters().get())
+                    Metric.builder().name("import-statements")
+                            .value(visitor.getTotalImportStatements().get()).build());
+            metrics.add(Metric.builder().name("default-parameters")
+                    .value(visitor.getTotalDefaultParameters().get())
                     .build());
-            metrics.add(Metric.builder().name("rest-statements").value(visitor.getTotalRestStatements().get()).build());
+            metrics.add(Metric.builder().name("rest-statements")
+                    .value(visitor.getTotalRestStatements().get()).build());
             metrics.add(
-                    Metric.builder().name("spread-arguments").value(visitor.getTotalSpreadArguments().get()).build());
-            metrics.add(Metric.builder().name("array-destructuring").value(visitor.getTotalArrayDestructuring().get())
+                    Metric.builder().name("spread-arguments")
+                            .value(visitor.getTotalSpreadArguments().get()).build());
+            metrics.add(Metric.builder().name("array-destructuring")
+                    .value(visitor.getTotalArrayDestructuring().get())
                     .build());
-            metrics.add(Metric.builder().name("object-destructuring").value(visitor.getTotalObjectDestructuring().get())
+            metrics.add(Metric.builder().name("object-destructuring")
+                    .value(visitor.getTotalObjectDestructuring().get())
                     .build());
 
-            metrics.add(Metric.builder().name("optional-chain").value(visitor.getTotalOptionalChain().get()).build());
+            metrics.add(Metric.builder().name("optional-chain").value(visitor.getTotalOptionalChain().get())
+                    .build());
             metrics.add(Metric.builder().name("template-string-expressions")
                     .value(visitor.getTotalTemplateStringExpressions().get()).build());
             metrics.add(Metric.builder().name("null-coalesce-operators")
                     .value(visitor.getTotalNullCoalesceOperators().get()).build());
             metrics.add(Metric.builder().name("exponentiation-assignments")
                     .value(visitor.getTotalExponentiationAssignments().get()).build());
-            metrics.add(Metric.builder().name("private-fields").value(visitor.getTotalPrivateFields().get()).build());
+            metrics.add(Metric.builder().name("private-fields").value(visitor.getTotalPrivateFields().get())
+                    .build());
             metrics.add(Metric.builder().name("numeric-separator")
                     .value(visitor.getTotalNumericLiteralSeparators().get()).build());
             metrics.add(Metric.builder().name("big-int").value(visitor.getTotalBigInt().get()).build());
 
             /* TODO: @Walter, review this code, please */
-            metrics.add(Metric.builder().name("enhanced-property-assignments").value(visitor.getTotalEnhancedPropertyAssignments().get()).build());
-            metrics.add(Metric.builder().name("computed-property-assignments").value(visitor.getTotalComputedPropertyAssignments().get()).build());
-            metrics.add(Metric.builder().name("function-property-declaration").value(visitor.getTotalFunctionPropertyDeclarations().get()).build());
+            metrics.add(Metric.builder().name("enhanced-property-assignments")
+                    .value(visitor.getTotalEnhancedPropertyAssignments().get()).build());
+            metrics.add(Metric.builder().name("computed-property-assignments")
+                    .value(visitor.getTotalComputedPropertyAssignments().get()).build());
+            metrics.add(Metric.builder().name("function-property-declaration")
+                    .value(visitor.getTotalFunctionPropertyDeclarations().get()).build());
+
+            metrics.add(Metric.builder().name("for-of-statements")
+                    .value(visitor.getTotalForOfStatements().get()).build());
+            metrics.add(Metric.builder().name("for-await-of").value(visitor.getTotalForAwaitOf().get())
+                    .build());
+            metrics.add(Metric.builder().name("static-block-in-classes")
+                    .value(visitor.getTotalStaticBlockInClasses().get()).build());
+            metrics.add(Metric.builder().name("optional-catch-binding-declarations")
+                    .value(visitor.getTotalOptionalCatchBindingDeclarations().get()).build());
+            metrics.add(Metric.builder().name("private_methods")
+                    .value(visitor.getTotalPrivateMethods().get()).build());
+            metrics.add(Metric.builder().name("assignment-operators")
+                    .value(visitor.getTotalAssignmentOperators().get()).build());
+            metrics.add(Metric.builder().name("spread-in-objects")
+                    .value(visitor.getTotalSpreadInObjects().get()).build());
+            metrics.add(Metric.builder().name("rest-in-objects")
+                    .value(visitor.getTotalRestInObjects().get()).build());
 
             metrics.add(Metric.builder().name("async-declarations-files")
                     .value(visitor.occurrences(Feature.AsyncDeclarations)).build());
@@ -295,7 +331,8 @@ public final class RepositoryWalker {
                     .value(visitor.occurrences(Feature.ArrayDestructuring)).build());
             metrics.add(Metric.builder().name("object-destructuring-files")
                     .value(visitor.occurrences(Feature.ObjectDestructuring)).build());
-            metrics.add(Metric.builder().name("optional-chain-files").value(visitor.occurrences(Feature.OptionalChain))
+            metrics.add(Metric.builder().name("optional-chain-files")
+                    .value(visitor.occurrences(Feature.OptionalChain))
                     .build());
             metrics.add(Metric.builder().name("template-string-expressions-files")
                     .value(visitor.occurrences(Feature.TemplateStringExpressions)).build());
@@ -303,24 +340,43 @@ public final class RepositoryWalker {
                     .value(visitor.occurrences(Feature.NullCoalesceOperators)).build());
             metrics.add(Metric.builder().name("exponentiation-assignments-files")
                     .value(visitor.occurrences(Feature.ExponentiationAssignments)).build());
-            metrics.add(Metric.builder().name("private-fields-files").value(visitor.occurrences(Feature.PrivateFields))
+            metrics.add(Metric.builder().name("private-fields-files")
+                    .value(visitor.occurrences(Feature.PrivateFields))
                     .build());
-            metrics.add(Metric.builder().name("numeric-separator-files").value(visitor.occurrences(Feature.NumericLiteralSeparators)).build());
-            metrics.add(Metric.builder().name("big-int-files").value(visitor.occurrences(Feature.BigInt)).build());
+            metrics.add(Metric.builder().name("numeric-separator-files")
+                    .value(visitor.occurrences(Feature.NumericLiteralSeparators)).build());
+            metrics.add(Metric.builder().name("big-int-files").value(visitor.occurrences(Feature.BigInt))
+                    .build());
             /* TODO: @Walter, review this code, please */
-            metrics.add(Metric.builder().name("enhanced-property-assignments-files").value(visitor.occurrences(Feature.EnhancedPropertyAssignments)).build());
-            metrics.add(Metric.builder().name("computed-property-assignments-files").value(visitor.occurrences(Feature.ComputedPropertyAssignments)).build());
-            metrics.add(Metric.builder().name("function-property-declaration-files").value(visitor.occurrences(Feature.FunctionPropertyDeclarations)).build());
+            metrics.add(Metric.builder().name("enhanced-property-assignments-files")
+                    .value(visitor.occurrences(Feature.EnhancedPropertyAssignments)).build());
+            metrics.add(Metric.builder().name("computed-property-assignments-files")
+                    .value(visitor.occurrences(Feature.ComputedPropertyAssignments)).build());
+            metrics.add(Metric.builder().name("function-property-declaration-files")
+                    .value(visitor.occurrences(Feature.FunctionPropertyDeclarations)).build());
 
-            metrics.add(Metric.builder().name("forof-statements-files").value(visitor.getTotalForOfStatements()).build());
-            
-            metrics.add(Metric.builder().name("forawaitof-files").value(visitor.getTotalForAwaitOf()).build());
+            metrics.add(Metric.builder().name("for-of-statements-files")
+                    .value(visitor.occurrences(Feature.ForOfStatements)).build());
+            metrics.add(Metric.builder().name("for-await-of-files")
+                    .value(visitor.occurrences(Feature.ForAwaitOf))
+                    .build());
+            metrics.add(Metric.builder().name("static-block-in-classes-files")
+                    .value(visitor.occurrences(Feature.StaticBlockInClasses)).build());
 
-            metrics.add(Metric.builder().name("staticblockclasses-files").value(visitor.getTotalStaticBlockInClasses()).build());            
+            metrics.add(Metric.builder().name("optional-catch-binding-declarations-files")
+                    .value(visitor.occurrences(Feature.OptionalCatchBindingDeclarations)).build());
+            metrics.add(Metric.builder().name("private_methods-files")
+                    .value(visitor.occurrences(Feature.PrivateMethods)).build());
+            metrics.add(Metric.builder().name("assignment-operators-files")
+                    .value(visitor.occurrences(Feature.AssignmentOperators)).build());
+            metrics.add(Metric.builder().name("spread-in-objects-files")
+                    .value(visitor.occurrences(Feature.SpreadInObjects)).build());
+            metrics.add(Metric.builder().name("rest-in-objects-files")
+                    .value(visitor.occurrences(Feature.RestInObjects)).build());
 
             metrics.add(Metric.builder().name("errors").value(errors.size()).build());
-            metrics.add(Metric.builder().name("statements").value(visitor.getTotalStatements().get()).build());
-
+            metrics.add(Metric.builder().name("statements").value(visitor.getTotalStatements().get())
+                    .build());
 
             summary.date(current).revision(head.toString()).metrics(metrics).errors(errors);
         } catch (Exception ex) {

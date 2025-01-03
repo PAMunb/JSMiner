@@ -43,10 +43,9 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 		FunctionPropertyDeclarations,
 		Statements,
 		ForOfStatements,
-		ForInStatements,
 		ForAwaitOf,
 		StaticBlockInClasses,
-		CatchDeclarations,
+		OptionalCatchBindingDeclarations,
 		PrivateMethods,
 		AssignmentOperators,
 		SpreadInObjects,
@@ -101,10 +100,9 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	AtomicInteger totalFunctionPropertyDeclarations = new AtomicInteger(0);
 	AtomicInteger totalStatements = new AtomicInteger(0);
 	AtomicInteger totalForOfStatements = new AtomicInteger(0);
-	AtomicInteger totalForInStatements = new AtomicInteger(0);
 	AtomicInteger totalForAwaitOf = new AtomicInteger(0);
 	AtomicInteger totalStaticBlockInClasses = new AtomicInteger(0);
-	AtomicInteger totalCatchDeclarations = new AtomicInteger(0);
+	AtomicInteger totalOptionalCatchBindingDeclarations = new AtomicInteger(0);
 	AtomicInteger totalPrivateMethods = new AtomicInteger(0);
 	AtomicInteger totalAssignmentOperators = new AtomicInteger(0);
 	AtomicInteger totalSpreadInObjects = new AtomicInteger(0);
@@ -404,8 +402,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitCatchProduction(CatchProductionContext ctx) {
 		if (ctx.assignable() == null) {
-			totalCatchDeclarations.incrementAndGet();
-			changeFilesOccurrences(Feature.CatchDeclarations);
+			totalOptionalCatchBindingDeclarations.incrementAndGet();
+			changeFilesOccurrences(Feature.OptionalCatchBindingDeclarations);
 		}
 		return super.visitCatchProduction(ctx);
 	}
