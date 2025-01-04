@@ -247,8 +247,7 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 
 	@Override
 	public Void visitPropertyShorthand(PropertyShorthandContext ctx) {
-		if (ctx.Ellipsis() != null) {
-		} else {
+		if (ctx.Ellipsis() == null) {
 			totalEnhancedPropertyAssignments.incrementAndGet();
 			changeFilesOccurrences(Feature.EnhancedPropertyAssignments);
 		}
@@ -342,18 +341,30 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 			} else if (ctx.assignable().objectLiteral() != null) {
 				totalObjectDestructuring.incrementAndGet();
 				changeFilesOccurrences(Feature.ObjectDestructuring);
-				if (ctx.assignable().objectLiteral().getText().contains("...")) {
-					// Detecta Rest em Objeto
-					totalRestInObjects.incrementAndGet();
-					changeFilesOccurrences(Feature.RestInObjects);
+
+				ObjectLiteralContext objectLiteralCtx = ctx.assignable().objectLiteral();
+				for (PropertyAssignmentContext propertyCtx : objectLiteralCtx.propertyAssignment()) {
+					if (propertyCtx instanceof PropertyShorthandContext) {
+						PropertyShorthandContext shorthandCtx = (PropertyShorthandContext) propertyCtx;
+						if (shorthandCtx.Ellipsis() != null) {
+							// Está no lado esquerdo como Rest (em destructuring)
+							totalRestInObjects.incrementAndGet();
+							changeFilesOccurrences(Feature.RestInObjects);
+						}
+					}
 				}
-			}
-			// Verifica Spread no lado direito (singleExpression)
-			if (ctx.singleExpression() instanceof ObjectLiteralExpressionContext) {
-				ObjectLiteralExpressionContext objectCtx = (ObjectLiteralExpressionContext) ctx.singleExpression();
-				if (objectCtx.getText().contains("...")) {
-					totalSpreadInObjects.incrementAndGet();
-					changeFilesOccurrences(Feature.SpreadInObjects);
+			} else if (ctx.singleExpression() instanceof ObjectLiteralExpressionContext) {
+				ObjectLiteralExpressionContext objectLiteralCtx = (ObjectLiteralExpressionContext) ctx
+						.singleExpression();
+				for (PropertyAssignmentContext propertyCtx : objectLiteralCtx.objectLiteral().propertyAssignment()) {
+					if (propertyCtx instanceof PropertyShorthandContext) {
+						PropertyShorthandContext shorthandCtx = (PropertyShorthandContext) propertyCtx;
+						if (shorthandCtx.Ellipsis() != null) {
+							// Está no lado direito como Spread (em objeto literal)
+							totalSpreadInObjects.incrementAndGet();
+							changeFilesOccurrences(Feature.SpreadInObjects);
+						}
+					}
 				}
 			}
 		}
@@ -448,7 +459,8 @@ public class JSVisitor extends JavaScriptParserBaseVisitor<Void> {
 	@Override
 	public Void visitLiteralExpression(LiteralExpressionContext ctx) {
 
-		if (ctx.literal().numericLiteral() != null && ctx.literal().getText().contains(NUMERIC_SEPARATOR)) {
+		if (ctx.literal().numericLiteral() != null
+				&& ctx.literal().numericLiteral().getText().contains(NUMERIC_SEPARATOR)) {
 			totalNumericLiteralSeparators.incrementAndGet();
 			changeFilesOccurrences(Feature.NumericLiteralSeparators);
 		}

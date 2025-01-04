@@ -101,3 +101,24 @@ const user = {
   name,
   ...location
 };
+
+var xhr = { // mock object
+  aborted: 0,
+  responseText: null,
+  responseXML: null,
+  status: 0,
+  statusText: 'n/a',
+  getAllResponseHeaders: function() {},
+  getResponseHeader: function() {},
+  setRequestHeader: function() {},
+  abort: function() {
+    log('aborting upload...');
+    var e = 'aborted';
+    this.aborted = 1;
+    $io.attr('src', s.iframeSrc); // abort op in progress
+    xhr.error = e;
+    s.error && s.error.call(s.context, xhr, 'error', e);
+    g && $.event.trigger("ajaxError", [xhr, s, e]);
+    s.complete && s.complete.call(s.context, xhr, 'error');
+  }
+};
