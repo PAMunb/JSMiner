@@ -6,18 +6,14 @@ import lombok.val;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.stream.Collectors;
+import java.util.concurrent.*;
 
 /**
- * The entire logic of the miner is verified, build and sent to execution here.
+ * The entire logic of the miner is verified, built, and sent to execution here.
  */
 @Builder
 public final class Walker {
@@ -34,121 +30,129 @@ public final class Walker {
     public final Date endDate;
     public final Boolean merges;
 
-    public void traverse() {
-        logger.info("initializing git traversal");
-        
-		logger.info(
-                "path: {} | project: {} | steps: {} | project threads: {} |  files threads: {} | initial date: {} | end date: {} | merges: {}",
-                path,
-                project,
-                steps,
-                projectThreads,
-                filesThreads,
-                initialDate,
-                endDate,
-                merges);
+    public void traverse() throws IOException, InterruptedException {
+        logger.info("Initializing git traversal");
 
-        val f = new File(path);
-        val p = Path.of(path);
+        logger.info(
+                "Path: {} | Project: {} | Steps: {} | Project threads: {} | Files threads: {} | Initial date: {} | End date: {} | Merges: {}",
+                path, project, steps, projectThreads, filesThreads, initialDate, endDate, merges);
 
-        if (!f.exists() || !f.isDirectory()) {
-            logger.warn("path {} does not exist or isn't a directory", p);
+        val projectPath = Path.of(path);
 
+        if (!Files.exists(projectPath) || !Files.isDirectory(projectPath)) {
+            logger.warn("Path {} does not exist or is not a directory", projectPath);
             return;
         }
 
+        List<Path> repositories = findRepositories(projectPath);
+
+        if (repositories.isEmpty()) {
+            logger.info("No git repositories found in {}", projectPath);
+            return;
+        }
+
+        Path output = setupOutputDirectory(projectPath);
+
+        if (hash != null && !hash.isEmpty() && repositories.size() != 1) {
+                throw new IllegalStateException("Hash mode requires exactly one repository");
+            }
+
+
+        int adjustedThreads = Math.min(projectThreads, Runtime.getRuntime().availableProcessors());
+        ExecutorService pool = Executors.newFixedThreadPool(adjustedThreads);
+
+        getRepositories(repositories, pool, output);
+
+    }
+
+    private void getRepositories(List<Path> repositories, ExecutorService pool, Path output) throws InterruptedException {
         try {
-            List<Path> repositories = new ArrayList<>();
-
-            // checking a file attribute to verify if it's a directory is slow, be careful
-            // with the amount of
-            // folders you'll be checking against.
-
-            if (project.isEmpty()) {
-                repositories.addAll(Files.find(p, 1, (path, attrs) -> {
-                    val isDirectory = attrs.isDirectory();
-                    val isGitDirectory = path.resolve(".git").toFile().isDirectory();
-
-                    return isDirectory && isGitDirectory;
-                }).collect(Collectors.toList()));
-            } else {
-                // allow to glob more than one project on specification
-                val projects = project.split(",");
-
-                repositories.addAll(Files.find(p, 1, (path, attrs) -> {
-                    val pathParts = path.toString().split("/");
-
-                    var isEqualPath = Arrays.stream(projects)
-                            .anyMatch(project -> pathParts[pathParts.length - 1].equals(project));
-
-                    val isDirectory = attrs.isDirectory();
-                    val isGitDirectory = path.resolve(".git").toFile().isDirectory();
-
-                    return isEqualPath && isDirectory && isGitDirectory;
-                }).collect(Collectors.toList()));
-            }
-
-            if (repositories.isEmpty()) {
-                logger.info("couldn't find any git folder in {}", p);
-                return;
-            }
-
-            // create a report directory and file that will contain the results
-            val output = Paths.get(p.toAbsolutePath().getParent().toString(), "../jsminer-out");
-            if (!output.toFile().exists()) {
-                Files.createDirectory(output);
-            }
-
-            // check if a hash has been submitted, it will invalidate almost all of the
-            // settings and execute the
-            // walker for a single commit hash.
-            if (hash.length() > 0) {
-                assert (repositories.size() == 1);
-            }
-
-            val pool = Executors.newFixedThreadPool(projectThreads);
-            val tasks = new Vector<Future<?>>();
+            List<Future<?>> tasks = new ArrayList<>();
 
             for (Path repositoryPath : repositories) {
-                val repositoryPathSplit = repositoryPath.toString().split("/");
-                val repositoryName = repositoryPathSplit[repositoryPathSplit.length - 1];
-
-                logger.info("project: {}", repositoryName);
-
-                val walker = RepositoryWalker.builder()
-                        .path(repositoryPath)
-                        .project(repositoryName)
-                        .merges(merges)
-                        .build();
-
-                val interval = Interval.builder()
-                        .begin(initialDate)
-                        .end(endDate)
-                        .build();
-
-                val task = RepositoryWalkerTask.builder()
-                        .walker(walker)
-                        .output(output)
-                        .interval(interval)
-                        .steps(steps)
-                        .hash(hash)
-                        .threads(filesThreads)
-                        .build();
-
-                tasks.add(pool.submit(task));
+                tasks.add(createTask(pool, repositoryPath, output));
             }
 
-            // wait for every task to finish
             for (Future<?> task : tasks) {
                 task.get();
             }
 
+        } catch (InterruptedException | ExecutionException e) {
+            logger.error("Failed to execute a concurrent task", e);
+            Thread.currentThread().interrupt();
+        } finally {
             pool.shutdown();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (java.lang.InterruptedException | java.util.concurrent.ExecutionException ex) {
-            logger.error("failed to execute a concurrent task, reason {}", ex.getMessage());
-            ex.printStackTrace();
+            if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+                pool.shutdownNow();
+            }
+            repositories.clear();
         }
+    }
+
+    private List<Path> findRepositories(Path basePath) throws IOException {
+        List<Path> repositories = new ArrayList<>();
+
+        if (project.isEmpty()) {
+            Files.walkFileTree(basePath, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, new SimpleFileVisitor<>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+                    if (Files.isDirectory(dir.resolve(".git"))) {
+                        repositories.add(dir);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } else {
+            Set<String> projectsSet = new HashSet<>(Arrays.asList(project.split(",")));
+            for (String repository : projectsSet) {
+                Files.walkFileTree(basePath.resolve(repository), EnumSet.noneOf(FileVisitOption.class), 1, new SimpleFileVisitor<>() {
+                    @Override
+                    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+                        String dirName = dir.getFileName().toString();
+                        if (Files.isDirectory(dir.resolve(".git"))) {
+                            Path fullPath = basePath.resolve(dirName);
+                            repositories.add(fullPath);
+                        }
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+            }
+        }
+
+        return repositories;
+    }
+
+    private Path setupOutputDirectory(Path basePath) throws IOException {
+        Path output = basePath.getParent().resolve("../jsminer-out").normalize();
+        if (!Files.exists(output)) {
+            Files.createDirectory(output);
+        }
+        return output;
+    }
+
+    private Future<?> createTask(ExecutorService pool, Path repositoryPath, Path output) {
+        String repositoryName = repositoryPath.getFileName().toString();
+
+        logger.info("Processing project: {}", repositoryName);
+
+        val walker = RepositoryWalker.builder()
+                .path(repositoryPath)
+                .project(repositoryName)
+                .merges(merges)
+                .build();
+
+        val interval = Interval.builder()
+                .begin(initialDate)
+                .end(endDate)
+                .build();
+
+        return pool.submit(RepositoryWalkerTask.builder()
+                .walker(walker)
+                .output(output)
+                .interval(interval)
+                .steps(steps)
+                .hash(hash)
+                .threads(filesThreads)
+                .build());
     }
 }

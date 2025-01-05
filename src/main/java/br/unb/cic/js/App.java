@@ -6,9 +6,13 @@ import com.beust.jcommander.JCommander;
 import lombok.val;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 public class App {
+
+    public static final String FAILED = "failed to parse date arguments";
+
     public static void main(String[] args) {
         val logger = LoggerFactory.getLogger(App.class);
 
@@ -38,9 +42,11 @@ public class App {
                     .build();
 
             walker.traverse();
-        } catch (ParseException ex) {
-            logger.error("failed to parse date arguments");
-            ex.printStackTrace();
+        } catch (ParseException | IOException ex) {
+            logger.error(FAILED);
+        } catch (InterruptedException e) {
+            logger.error(FAILED);
+            Thread.currentThread().interrupt();
         }
     }
 }

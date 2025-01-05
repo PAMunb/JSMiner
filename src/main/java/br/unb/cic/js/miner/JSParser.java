@@ -2,44 +2,51 @@ package br.unb.cic.js.miner;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JSParser {
-    public JavaScriptParser.ProgramContext parse(String content) throws Exception {
-    	CharStream charStream = CharStreams.fromString(content);
-        ExceptionBasedErrorListener listener = new ExceptionBasedErrorListener();
-        JavaScriptLexer lexer = configureLexer(charStream, listener);
-        JavaScriptParser parser = configureParser(lexer, listener);
+    private static final Logger log = LoggerFactory.getLogger(JSParser.class);
 
+    private final ExceptionBasedErrorListener errorListener;
+
+    public JSParser() {
+        this.errorListener = new ExceptionBasedErrorListener();
+    }
+
+    public JavaScriptParser.ProgramContext parse(String content) {
+        JavaScriptParser parser = proccessContent(content);
         return parser.program();
     }
 
-    public void printParseTree(String content) throws Exception {
-        CharStream charStream = CharStreams.fromString(content);
-        ExceptionBasedErrorListener listener = new ExceptionBasedErrorListener();
-        JavaScriptLexer lexer = configureLexer(charStream, listener);
-        JavaScriptParser parser = configureParser(lexer, listener);
+    public void printParseTree(String content) {
+        JavaScriptParser parser = proccessContent(content);
+
         parser.setBuildParseTree(true);
         RuleContext tree = parser.program();
-        System.out.println(tree.toStringTree(parser));
-    }
-    private JavaScriptParser configureParser(JavaScriptLexer lexer, ExceptionBasedErrorListener listener) {
-        JavaScriptParser parser = new JavaScriptParser(new CommonTokenStream(lexer));
-        parser.removeErrorListeners();
-        parser.addErrorListener(listener);
-        return parser;
+
+        if (log.isInfoEnabled()) {
+            log.info(tree.toStringTree(parser));
+        }
     }
 
-    private JavaScriptLexer configureLexer(CharStream stream, ExceptionBasedErrorListener listener) {
-        JavaScriptLexer lexer = new JavaScriptLexer(stream);
+    private JavaScriptParser proccessContent(String content) {
+        CharStream charStream = CharStreams.fromString(content);
+        JavaScriptLexer lexer = new JavaScriptLexer(charStream);
+        JavaScriptParser parser = new JavaScriptParser(new CommonTokenStream(lexer));
+
         lexer.removeErrorListeners();
-        lexer.addErrorListener(new ExceptionBasedErrorListener());
-        return lexer;
+        lexer.addErrorListener(errorListener);
+        parser.removeErrorListeners();
+        parser.addErrorListener(errorListener);
+
+        return parser;
     }
 
     static class ExceptionBasedErrorListener extends BaseErrorListener {
         @Override
         public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-            throw new ParseCancellationException(String.format("line: %d : %d - %s ", line, charPositionInLine, msg));
+            throw new ParseCancellationException(String.format("line: %d : %d - %s", line, charPositionInLine, msg));
         }
     }
 }
